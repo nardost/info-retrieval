@@ -13,6 +13,7 @@
     <modules>
         <module>commons</module>
         <module>documents</module>
+        <module>preprocessor</module>
     </modules>
 
     <properties>

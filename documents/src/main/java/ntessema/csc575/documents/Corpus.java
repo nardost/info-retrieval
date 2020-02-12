@@ -19,7 +19,7 @@ public class Corpus {
     }
 
     /**
-     * Add a document in the corpus
+     * Add a document to the corpus
      *
      * @param d document to be added to corpus
      */

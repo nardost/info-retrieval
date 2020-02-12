@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<configuration>
+    <property key="tokenizer" value="opennlp" />
+</configuration>
