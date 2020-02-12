@@ -1,0 +1,60 @@
+package ntessema.csc575.documents;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+
+public class SetWeightTest {
+
+    private Document document;
+    private Map<String, Double> newWeights;
+
+    @Before
+    public void init() {
+        document = new Document("dummy-id");
+        document.setDocumentVector(Stream.of(new Object[][] {
+                { "A", 12.0 },
+                { "B", 25.3 },
+                { "C", 4.3 },
+                { "D", 5.7 },
+                { "E", 6.1 },
+                { "F", 11.0 },
+                { "G", 15.3 },
+                { "H", 14.3 },
+                { "I", 35.7 },
+                { "J", 16.1 }
+
+        }).collect(Collectors.toMap(x -> (String) x[0], x -> (Double) x[1])));
+
+        newWeights = Stream.of(new Object[][] {
+                    { "A", 1.2 },
+                    { "B", 2.3 },
+                    { "F", 1.1 },
+                    { "G", 1.5 },
+                    { "H", 1.4 },
+                    { "I", 3.5 },
+                    { "J", 3.5 }
+            }).collect(Collectors.toMap(x -> (String) x[0], x -> (Double) x[1]));
+    }
+
+    @Test
+    public void setWeight_correctly_sets_the_weight_of_a_term() {
+        document.getDocumentVector().forEach((k,v) -> {
+            newWeights.forEach((x,y) -> {
+                if(k.equals(x)) {
+                    document.setWeight(k, y);
+                }
+            });
+        });
+        newWeights.forEach((k,v) -> {
+            assertThat(v, is(equalTo(document.getDocumentVector().get(k))));
+        });
+    }
+}
