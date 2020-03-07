@@ -1,8 +1,14 @@
 package ntessema.csc575.documents;
 
 import ntessema.csc575.commons.DocumentException;
+import ntessema.csc575.preprocessor.Tokenizer;
+import ntessema.csc575.preprocessor.TokenizerFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.Map;
 
@@ -15,6 +21,9 @@ public class Document {
     private String location; // path, URI, ...
     private double length;
 
+    /*
+     * Terms and their frequencies
+     */
     private Map<String, Double> documentVector;
 
     public Document(String id) {
@@ -43,11 +52,21 @@ public class Document {
 
     /**
      * Creates a document vector from an incoming plain document.
-     * @param file - The plain file to be vectorized.
+     * @param path - The path of the file to be vectorized.
      * @return a Map object representing the vector.
      */
-    public static Map<String, Double> getDocumentVectorFromFile(File file) {
-        return null;
+    public static Map<String, Double> getDocumentVectorFromFile(Path path) throws IOException {
+        Tokenizer tokenizer = TokenizerFactory.createTokenizer();
+        Map<String, Double> documentVector = tokenizer.tokenize(path);
+        Double max = documentVector.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getValue();
+        System.out.println(max);
+        documentVector.forEach((k,v) -> {
+            if(true || v == max) {
+                System.out.println(k.length() + String.format("%20s", k) + "  " + String.format("%-6s", Double.toString(v)));
+            }
+        });
+        return documentVector;
+
     }
 
     /**

@@ -91,6 +91,7 @@ public class StopWords {
         h.put("have", true);
         h.put("haven't", true);
         h.put("having", true);
+        h.put("He", true);
         h.put("he", true);
         h.put("he'd", true);
         h.put("he'll", true);

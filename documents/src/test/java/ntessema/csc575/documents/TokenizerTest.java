@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.Map;
@@ -28,12 +29,13 @@ public class TokenizerTest {
     @Test
     public void test_tokenizer_with_console_outputs() {
         try {
-            Map<String, Double> documentVector = tokenizer.tokenize(Paths.get(getClass().getClassLoader().getResource("documents/28054-0.txt").toURI()));
+            Path path = Paths.get(getClass().getClassLoader().getResource("documents/1.txt").toURI());
+            Map<String, Double> documentVector = Document.getDocumentVectorFromFile(path);
             Double max = documentVector.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getValue();
             System.out.println(max);
             documentVector.forEach((k,v) -> {
-                if(v == max) {
-                    System.out.println(k + " -> " + v);
+                if(true || v == max) {
+                    System.out.println(k.length() + String.format("%20s", k) + "  " + String.format("%-6s", Double.toString(v)));
                 }
             });
         } catch(IOException ioe) {

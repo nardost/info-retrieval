@@ -36,7 +36,7 @@ public class OpenNLPTokenizer implements Tokenizer {
             for(String token : tokens) {
                 //TODO: remove if stop word.
                 //https://github.com/apache/opennlp-sandbox/blob/master/summarizer/src/main/java/opennlp/summarization/preprocess/StopWords.java
-                if(stopWords.isStopWord(token)) {
+                if(stopWords.isStopWord(token.toLowerCase())) {
                     continue;
                 }
                 String stem = stemmer.stem(token).toString();
