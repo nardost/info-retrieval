@@ -38,11 +38,21 @@ public class Matrix {
         if(matrix == null || matrix.length == 0) {
             return false;
         }
-        final double ROWS = matrix.length;
+
         final double COLS = matrix[0].dimension();
-        if(matrix.length != ROWS) return false;
         for(Vector row : matrix) {
             if(row.dimension() != COLS) return false;
+        }
+        return true;
+    }
+
+    public static boolean isValid(double[][] matrix) {
+        if(matrix == null || matrix.length == 0) {
+            return false;
+        }
+        final double COLS = matrix[0].length;
+        for(double [] row : matrix) {
+            if(row.length != COLS) return false;
         }
         return true;
     }
