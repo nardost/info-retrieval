@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.is;
 
 public class DotProductTest {
 
@@ -51,6 +52,6 @@ public class DotProductTest {
         }).collect(Collectors.toMap(x -> (String) x[0], x -> (Double) x[1]));
         doc2.setDocumentVector(vector);
 
-        assertThat(document.dot(doc2), closeTo(355.55, 0.01));
+        assertThat(document.dot(doc2), is(closeTo(355.55, 0.01)));
     }
 }
