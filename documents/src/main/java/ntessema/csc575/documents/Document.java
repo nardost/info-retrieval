@@ -1,14 +1,7 @@
 package ntessema.csc575.documents;
 
 import ntessema.csc575.commons.DocumentException;
-import ntessema.csc575.preprocessor.Tokenizer;
-import ntessema.csc575.preprocessor.TokenizerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.Map;
 
@@ -18,7 +11,10 @@ public class Document {
     // What is DocumentReference?
     // Should id, location, length be wrapped in a separate reference class?
     private String id;
-    private String location; // path, URI, ...
+    private String program;
+    private String title;
+    private String link; // path, URI, ...
+    private String date;
     private double length;
 
     /*
@@ -38,36 +34,21 @@ public class Document {
             throw new DocumentException("Null assignment not allowed during document construction.");
         }
         this.id = id;
-        this.location = location;
+        this.link = location;
     }
 
-    public Document(String id, String location, Map<String, Double> documentVector) {
+    public Document(String id, String program, String title, String location, String date, Map<String, Double> documentVector) {
         if(id == null || location == null || documentVector == null) {
             throw new DocumentException("Null assignment not allowed during document construction.");
         }
         this.id = id;
-        this.location = location;
+        this.program = program;
+        this.title = title;
+        this.link = location;
+        this.date = date;
         this.documentVector = documentVector;
     }
 
-    /**
-     * Creates a document vector from an incoming plain document.
-     * @param path - The path of the file to be vectorized.
-     * @return a Map object representing the vector.
-     */
-    public static Map<String, Double> getDocumentVectorFromFile(Path path) throws IOException {
-        Tokenizer tokenizer = TokenizerFactory.createTokenizer();
-        Map<String, Double> documentVector = tokenizer.tokenize(path);
-        Double max = documentVector.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getValue();
-        System.out.println(max);
-        documentVector.forEach((k,v) -> {
-            if(true || v == max) {
-                System.out.println(k.length() + String.format("%20s", k) + "  " + String.format("%-6s", Double.toString(v)));
-            }
-        });
-        return documentVector;
-
-    }
 
     /**
      * Change the weight of a term in document
@@ -129,15 +110,31 @@ public class Document {
         return id;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLink() {
+        return link;
     }
 
-    public void setLocation(String location) {
-        if(location == null) {
+    String getProgram() {
+        return program;
+    }
+
+    String getTitle() {
+        return title;
+    }
+
+    String getDate() {
+        return date;
+    }
+
+    double getLength() {
+        return length;
+    }
+
+    public void setLink(String link) {
+        if(link == null) {
             throw new DocumentException("Null location is not allowed.");
         }
-        this.location = location;
+        this.link = link;
     }
 
     public Map<String, Double> getDocumentVector() {
