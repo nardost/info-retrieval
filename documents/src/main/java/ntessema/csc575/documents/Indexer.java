@@ -9,10 +9,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Indexer {
 
@@ -93,12 +90,17 @@ public class Indexer {
                         !lines.get(1).matches(titlePattern + ".*") ||
                         !lines.get(2).matches(linkPattern + ".*") ||
                         !lines.get(3).matches(datePattern + ".*")) {
-            return null;
+            //return null;
+            program = "unknown-program";
+            title = "title-not-available";
+            link = "link-not-available";
+            date = "date-unknown";
+        } else {
+            program = (lines.get(0).split(programPattern).length > 1) ? lines.get(0).split(programPattern)[1] : "unknown-program";
+            title = (lines.get(1).split(titlePattern).length > 1) ? lines.get(1).split(titlePattern)[1] : "title-not-available";
+            link = (lines.get(2).split(linkPattern).length > 1) ? lines.get(2).split(linkPattern)[1] : "link-not-available";
+            date = (lines.get(3).split(datePattern).length > 1) ? lines.get(3).split(datePattern)[1] : "date-unknown";
         }
-        program = (lines.get(0).split(programPattern).length > 1) ? lines.get(0).split(programPattern)[1] : "unknown-program";
-        title = (lines.get(1).split(titlePattern).length > 1) ? lines.get(1).split(titlePattern)[1] : "title-not-available";
-        link = (lines.get(2).split(linkPattern).length > 1) ? lines.get(2).split(linkPattern)[1] : "link-not-available";
-        date = (lines.get(3).split(datePattern).length > 1) ? lines.get(3).split(datePattern)[1] : "date-unknown";
 
         Tokenizer tokenizer = TokenizerFactory.createTokenizer();
         Map<String, Double> documentVector = tokenizer.tokenize(path);
@@ -193,14 +195,29 @@ public class Indexer {
                 length +=  tf * tf * idf * idf;
                 posting.getDocumentReference().setLength(length);
             }
-        }/*
+        }
+        /*
+         * The square root of a document reference should only be done once.
+         * The iteration below comes back to a document reference as
+         * it walks through the inverted index. Unless we remember
+         * which document has its length already square rooted, the length
+         * will be square rooted repeatedly and will converge to 1.0.
+         *
+         * Mark a document reference as done if the
+         * square root of the length has been computed once.
+         */
+        List<DocumentReference> done = new ArrayList<>();
         for(Map.Entry<String, TokenInfo> token : invertedIndex.entrySet()) {
             TokenInfo tokenInfo = token.getValue();
             List<TokenOccurrence> postings = tokenInfo.getOccurrence();
             for(TokenOccurrence posting : postings) {
-                double length = posting.getDocumentReference().getLength();
-                posting.getDocumentReference().setLength(Math.sqrt(length));
+                DocumentReference ref = posting.getDocumentReference();
+                double length = ref.getLength();
+                if(done.indexOf(ref) < 0) {
+                    ref.setLength(Math.sqrt(length));
+                    done.add(ref);
+                }
             }
-        }*/
+        }
     }
 }
