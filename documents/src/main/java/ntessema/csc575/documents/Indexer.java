@@ -1,6 +1,6 @@
 package ntessema.csc575.documents;
 
-import ntessema.csc575.commons.ConfigurationManager;
+import ntessema.csc575.commons.Utilities;
 import ntessema.csc575.preprocessor.Tokenizer;
 import ntessema.csc575.preprocessor.TokenizerFactory;
 
@@ -9,8 +9,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -25,20 +24,43 @@ public class Indexer {
     public List<Document> getAllDocuments() throws
             IOException,
             URISyntaxException {
-        final String corpusDirectory = ConfigurationManager.getConfiguration("corpusDirectory");
-        final String separator = File.separator;
+
+        final String corpusDirectory = Utilities.getInstance().getCorpusDirectory();
         List<Document> documents = new LinkedList<>();
-        File documentsDirectory = new File(getClass().getClassLoader().getResource(corpusDirectory).getFile());
+        File documentsDirectory = Utilities.getInstance().getFile(corpusDirectory);
 
         if(documentsDirectory != null && documentsDirectory.isDirectory()) {
             for(String file : documentsDirectory.list()) {
-                String pathToDocument = corpusDirectory + separator + file;
-                Path path = Paths.get(getClass().getClassLoader().getResource(pathToDocument).toURI());
+                Path path = Utilities.getInstance().getPathFromFileName(file);
                 Document document = getDocumentFromFile(path);
-                if(document != null) documents.add(document);
+                if(document != null) {
+                    documents.add(document);
+                }
             }
         }
         return documents;
+    }
+
+    public Map<String, DocumentReference> getAllDocumentReferences() throws
+            URISyntaxException,
+            IOException {
+        final String corpusDirectory = Utilities.getInstance().getCorpusDirectory();
+        File documentDirectory = Utilities.getInstance().getFile(corpusDirectory);
+
+        Map<String, DocumentReference> documentReferences = new HashMap<>();
+
+        if(documentDirectory != null && documentDirectory.isDirectory()) {
+            for(String file : documentDirectory.list()) {
+                Path path = Utilities.getInstance().getPathFromFileName(file);
+                Document document = getDocumentFromFile(path);
+                if(document != null) {
+                    DocumentReference reference = new DocumentReference(path, document.getDocumentVector().size());
+                    documentReferences.put(file, reference);
+                }
+            }
+        }
+
+        return documentReferences;
     }
 
     /**
@@ -88,5 +110,53 @@ public class Indexer {
                 date.replaceFirst("\\s+", ""),
                 documentVector);
         return document;
+    }
+
+    /**
+     * Given a path, get the document reference object
+     */
+    public DocumentReference getDocumentReferenceFromFile(Path path) throws IOException {
+        Document document = getDocumentFromFile(path);
+        DocumentReference reference = new DocumentReference(path, document.getDocumentVector().size());
+        return reference;
+    }
+
+    /**
+     * Create an inverted index
+     */
+    public Map<String, TokenInfo> createInvertedIndex() throws
+            IOException,
+            URISyntaxException {
+
+        Map<String, TokenInfo> invertedIndex = new HashMap<>();
+
+        Map<String, DocumentReference> documentReferences = getAllDocumentReferences();
+        /*
+         * For each document
+         */
+        for(Map.Entry<String, DocumentReference> item : documentReferences.entrySet()) {
+            String fileName = item.getKey();
+            DocumentReference documentReference = item.getValue();
+            /*
+             * Get the entire document with the document-term vector
+             */
+            Document document = getDocumentFromFile(Utilities.getInstance().getPathFromFileName(fileName));
+            Map<String, Double> vector = document.getDocumentVector();
+            for(Map.Entry<String, Double> tokenItem : vector.entrySet()) {
+                String term = tokenItem.getKey();
+                Double termWeight = tokenItem.getValue();
+
+                if(!invertedIndex.containsKey(term)) {
+                    invertedIndex.put(term, new TokenInfo(term));
+                }
+                TokenInfo tokenInfo = invertedIndex.get(term);
+                TokenOccurrence tokenOccurrence = new TokenOccurrence(documentReference, termWeight);
+                tokenInfo.getOccurrence().add(tokenOccurrence);
+            }
+        }
+        //TODO: compute IDF
+        //TODO: compute vector lengths for all documents in H (done, I think)
+
+        return invertedIndex;
     }
 }

@@ -40,7 +40,7 @@ public class StopWords {
         h.put("7", true);
         h.put("8", true);
         h.put("9", true);
-
+        h.put("Link: ", true);
         h.put("a", true);
         h.put("about", true);
         h.put("above", true);

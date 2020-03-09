@@ -1,16 +1,14 @@
 package ntessema.csc575.documents;
 
-import ntessema.csc575.commons.ConfigurationManager;
+import ntessema.csc575.commons.Utilities;
 import ntessema.csc575.preprocessor.Tokenizer;
 import ntessema.csc575.preprocessor.TokenizerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -30,10 +28,7 @@ public class TokenizerTest {
     public void test_tokenizer_with_console_outputs() {
         try {
             final String fName = "1.txt";
-            final String separator = File.separator;
-            final String corpusDirectory = ConfigurationManager.getConfiguration("corpusDirectory");
-            final String filePath = corpusDirectory + separator + fName;
-            Path path = Paths.get(getClass().getClassLoader().getResource(filePath).toURI());
+            Path path = Utilities.getInstance().getPathFromFileName(fName);
 
             Document document = new Indexer().getDocumentFromFile(path);
             //Double max = document.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getValue();
@@ -47,7 +42,7 @@ public class TokenizerTest {
         } catch(IOException ioe) {
             System.out.println("I/O Exception occurred.");
         } catch(URISyntaxException use) {
-            System.out.println("URI syntax exception.");
+            use.printStackTrace();
         }
         assertThat(1, is(equalTo(1)));
     }
