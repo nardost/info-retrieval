@@ -5,18 +5,15 @@ import ntessema.csc575.commons.DocumentException;
 import java.util.Comparator;
 import java.util.Map;
 
+/*
+ * This can serve both as document and as query
+ */
 public class Document {
 
-    //TODO:
-    // What is DocumentReference?
-    // Should id, location, length be wrapped in a separate reference class?
+    /*
+     * This could be the OS file name
+     */
     private String id;
-    private String program;
-    private String title;
-    private String link; // path, URI, ...
-    private String date;
-    private double length;
-
     /*
      * Terms and their frequencies
      */
@@ -29,23 +26,11 @@ public class Document {
         this.id = id;
     }
 
-    public Document(String id, String location) {
-        if(id == null || location == null) {
+    public Document(String id, Map<String, Double> documentVector) {
+        if(id == null || documentVector == null) {
             throw new DocumentException("Null assignment not allowed during document construction.");
         }
         this.id = id;
-        this.link = location;
-    }
-
-    public Document(String id, String program, String title, String location, String date, Map<String, Double> documentVector) {
-        if(id == null || location == null || documentVector == null) {
-            throw new DocumentException("Null assignment not allowed during document construction.");
-        }
-        this.id = id;
-        this.program = program;
-        this.title = title;
-        this.link = location;
-        this.date = date;
         this.documentVector = documentVector;
     }
 
@@ -108,33 +93,6 @@ public class Document {
      */
     public String getId() {
         return id;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    String getProgram() {
-        return program;
-    }
-
-    String getTitle() {
-        return title;
-    }
-
-    String getDate() {
-        return date;
-    }
-
-    double getLength() {
-        return length;
-    }
-
-    public void setLink(String link) {
-        if(link == null) {
-            throw new DocumentException("Null location is not allowed.");
-        }
-        this.link = link;
     }
 
     public Map<String, Double> getDocumentVector() {

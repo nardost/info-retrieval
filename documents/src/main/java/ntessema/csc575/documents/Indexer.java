@@ -66,50 +66,11 @@ public class Indexer {
      * @return a Map object representing the vector.
      */
     public Document getDocumentFromFile(Path path) throws IOException {
-        List<String> lines = Files.readAllLines(path);
-        String program;
-        String title;
-        String link;
-        String date;
-
-        String programPattern = "Program:";
-        String titlePattern = "Title:";
-        String linkPattern = "Link:";
-        String datePattern = "Date:";
-
-        int numberOfLines = lines.size();
-        /*
-         * Documents in the corpus must strictly follow
-         * a certain pattern.
-         * Line 1: "Program: \\.*"
-         * Line 2: "Title: \\.*"
-         * Line 3: "Link: \\.*"
-         *
-         */
-        if(lines.size() < 4 || !lines.get(0).matches(programPattern + ".*") ||
-                        !lines.get(1).matches(titlePattern + ".*") ||
-                        !lines.get(2).matches(linkPattern + ".*") ||
-                        !lines.get(3).matches(datePattern + ".*")) {
-            //return null;
-            program = "unknown-program";
-            title = "title-not-available";
-            link = "link-not-available";
-            date = "date-unknown";
-        } else {
-            program = (lines.get(0).split(programPattern).length > 1) ? lines.get(0).split(programPattern)[1] : "unknown-program";
-            title = (lines.get(1).split(titlePattern).length > 1) ? lines.get(1).split(titlePattern)[1] : "title-not-available";
-            link = (lines.get(2).split(linkPattern).length > 1) ? lines.get(2).split(linkPattern)[1] : "link-not-available";
-            date = (lines.get(3).split(datePattern).length > 1) ? lines.get(3).split(datePattern)[1] : "date-unknown";
-        }
 
         Tokenizer tokenizer = TokenizerFactory.createTokenizer();
         Map<String, Double> documentVector = tokenizer.tokenize(path);
         Document document = new Document(
                 path.getFileName().toString(),
-                program.replaceFirst("\\s+", ""),
-                title.replaceFirst("\\s+", ""),
-                link.replaceFirst("\\s+", ""),
-                date.replaceFirst("\\s+", ""),
                 documentVector);
         return document;
     }
@@ -219,5 +180,56 @@ public class Indexer {
                 }
             }
         }
+    }
+
+    /**
+     * TODO: This should be moved elsewhere. The content has to
+     *  come from lines 5 onwards.
+     * @param path
+     * @return
+     * @throws IOException
+     */
+    public BBCDocument getBBCDocumentFromFile(Path path) throws IOException {
+        List<String> lines = Files.readAllLines(path);
+        String program;
+        String title;
+        String link;
+        String date;
+
+        String programPattern = "Program:";
+        String titlePattern = "Title:";
+        String linkPattern = "Link:";
+        String datePattern = "Date:";
+
+        int numberOfLines = lines.size();
+        /*
+         * Documents in the corpus must strictly follow
+         * a certain pattern.
+         * Line 1: "Program: \\.*"
+         * Line 2: "Title: \\.*"
+         * Line 3: "Link: \\.*"
+         *
+         */
+        if(numberOfLines < 4 || !lines.get(0).matches(programPattern + ".*") ||
+                !lines.get(1).matches(titlePattern + ".*") ||
+                !lines.get(2).matches(linkPattern + ".*") ||
+                !lines.get(3).matches(datePattern + ".*")) {
+            //return null;
+            program = "unknown-program";
+            title = "title-not-available";
+            link = "link-not-available";
+            date = "date-unknown";
+        } else {
+            program = (lines.get(0).split(programPattern).length > 1) ? lines.get(0).split(programPattern)[1] : "unknown-program";
+            title = (lines.get(1).split(titlePattern).length > 1) ? lines.get(1).split(titlePattern)[1] : "title-not-available";
+            link = (lines.get(2).split(linkPattern).length > 1) ? lines.get(2).split(linkPattern)[1] : "link-not-available";
+            date = (lines.get(3).split(datePattern).length > 1) ? lines.get(3).split(datePattern)[1] : "date-unknown";
+        }
+        return new BBCDocument(path.getFileName().toString(),
+                program,
+                title,
+                link,
+                date,
+                title);
     }
 }

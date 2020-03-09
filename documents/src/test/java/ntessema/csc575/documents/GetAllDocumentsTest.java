@@ -28,13 +28,6 @@ public class GetAllDocumentsTest {
                 String separator = ",";
                 sb.append(document.getId());
                 sb.append(separator);
-                sb.append(document.getProgram());
-                sb.append(separator);
-                sb.append(document.getTitle());
-                sb.append(separator);
-                sb.append(document.getLink());
-                sb.append(separator);
-                sb.append(document.getDate());
                 sb.append("\n");
             });
             System.out.println(sb.toString());

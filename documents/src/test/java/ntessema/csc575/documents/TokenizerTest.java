@@ -33,9 +33,6 @@ public class TokenizerTest {
             Document document = new Indexer().getDocumentFromFile(path);
             //Double max = document.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getValue();
             System.out.println(document.getId());
-            System.out.println(document.getProgram());
-            System.out.println(document.getTitle());
-            System.out.println(document.getLink());
             document.getDocumentVector().forEach((term, weight) -> {
                 System.out.println(term + "\t" + weight);
             });
