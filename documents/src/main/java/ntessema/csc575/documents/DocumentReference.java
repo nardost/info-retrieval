@@ -14,19 +14,19 @@ public class DocumentReference {
     private Path path;
     private double length;
 
-    DocumentReference(Path path, double length) throws DocumentException {
-        if(length < 0 || path == null) {
+    DocumentReference(Path path) {
+        if(path == null) {
             throw new DocumentException("Invalid construction value(s).");
         }
         this.path = path;
-        this.length = length;
+        this.length = 0.0;
     }
 
     public Path getPath() {
         return path;
     }
 
-    public void setPath(Path path) throws DocumentException {
+    public void setPath(Path path) {
         if(path == null) {
             throw new DocumentException("Path variable cannot be null");
         }
@@ -37,7 +37,7 @@ public class DocumentReference {
         return length;
     }
 
-    public void setLength(double length) throws DocumentException {
+    public void setLength(double length) {
         if(length < 0) {
             throw new DocumentException("length cannot be negative");
         }

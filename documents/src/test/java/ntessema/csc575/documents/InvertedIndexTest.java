@@ -22,7 +22,7 @@ public class InvertedIndexTest {
         try {
             Map<String, TokenInfo> invertedIndex = indexer.createInvertedIndex();
             invertedIndex.forEach((token, tokenInfo) -> {
-                System.out.println(String.format("%20s", token) + " -> " + Utilities.getInstance().listToString(tokenInfo.getOccurrence()));
+                System.out.println(String.format("%20s", token + "(" + tokenInfo.getIdf() + ")") + " -> " + Utilities.getInstance().listToString(tokenInfo.getOccurrence()));
             });
         } catch (IOException ioe) {
             ioe.printStackTrace();

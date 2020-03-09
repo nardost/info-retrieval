@@ -54,7 +54,7 @@ public class Indexer {
                 Path path = Utilities.getInstance().getPathFromFileName(file);
                 Document document = getDocumentFromFile(path);
                 if(document != null) {
-                    DocumentReference reference = new DocumentReference(path, document.getDocumentVector().size());
+                    DocumentReference reference = new DocumentReference(path);
                     documentReferences.put(file, reference);
                 }
             }
@@ -117,7 +117,7 @@ public class Indexer {
      */
     public DocumentReference getDocumentReferenceFromFile(Path path) throws IOException {
         Document document = getDocumentFromFile(path);
-        DocumentReference reference = new DocumentReference(path, document.getDocumentVector().size());
+        DocumentReference reference = new DocumentReference(path);
         return reference;
     }
 
@@ -131,6 +131,7 @@ public class Indexer {
         Map<String, TokenInfo> invertedIndex = new HashMap<>();
 
         Map<String, DocumentReference> documentReferences = getAllDocumentReferences();
+        final int NUMBER_OF_DOCUMENTS = documentReferences.size();
         /*
          * For each document
          */
@@ -144,6 +145,7 @@ public class Indexer {
             Map<String, Double> vector = document.getDocumentVector();
             for(Map.Entry<String, Double> tokenItem : vector.entrySet()) {
                 String term = tokenItem.getKey();
+                //TODO: is this the term frequency?
                 Double termWeight = tokenItem.getValue();
 
                 if(!invertedIndex.containsKey(term)) {
@@ -154,9 +156,51 @@ public class Indexer {
                 tokenInfo.getOccurrence().add(tokenOccurrence);
             }
         }
-        //TODO: compute IDF
-        //TODO: compute vector lengths for all documents in H (done, I think)
+        /*
+         * compute IDF
+         */
+        computeIdf(invertedIndex, NUMBER_OF_DOCUMENTS);
+        computeDocumentLengths(invertedIndex);
 
         return invertedIndex;
+    }
+
+    /**
+     * Compute idf for all tokens in the inverted index
+     */
+    private void computeIdf(Map<String, TokenInfo> invertedIndex, int numberOfDocuments) {
+        for(Map.Entry<String, TokenInfo> token : invertedIndex.entrySet()) {
+            TokenInfo tokenInfo = token.getValue();
+
+            int documentFrequency = tokenInfo.getOccurrence().size();
+            double idf = Math.log((double)numberOfDocuments / (double) documentFrequency) / Math.log(2.0);
+            tokenInfo.setIdf(idf);
+        }
+    }
+
+    /**
+     * Compute document length
+     */
+    private void computeDocumentLengths(Map<String, TokenInfo> invertedIndex) {
+        for(Map.Entry<String, TokenInfo> token : invertedIndex.entrySet()) {
+            TokenInfo tokenInfo = token.getValue();
+            double idf = tokenInfo.getIdf();
+            List<TokenOccurrence> postings = tokenInfo.getOccurrence();
+            for(TokenOccurrence posting : postings) {
+                double tf = posting.getFrequency();
+                DocumentReference d = posting.getDocumentReference();
+                double length = d.getLength();
+                length +=  tf * tf * idf * idf;
+                posting.getDocumentReference().setLength(length);
+            }
+        }/*
+        for(Map.Entry<String, TokenInfo> token : invertedIndex.entrySet()) {
+            TokenInfo tokenInfo = token.getValue();
+            List<TokenOccurrence> postings = tokenInfo.getOccurrence();
+            for(TokenOccurrence posting : postings) {
+                double length = posting.getDocumentReference().getLength();
+                posting.getDocumentReference().setLength(Math.sqrt(length));
+            }
+        }*/
     }
 }

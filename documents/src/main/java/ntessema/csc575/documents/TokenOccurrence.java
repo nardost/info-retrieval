@@ -30,7 +30,7 @@ public class TokenOccurrence {
      */
     public String toString() {
         String fileName = documentReference.getPath().getFileName().toString();
-        String name = "DOC" + fileName.substring(0, fileName.length() - 4);
-        return name + "(" + frequency + ")";
+        String name = "DOC" + fileName.replace(".txt", "");
+        return name + "[" + frequency + "][" + documentReference.getLength() + "]";
     }
 }
