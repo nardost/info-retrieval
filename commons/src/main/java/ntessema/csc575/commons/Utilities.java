@@ -29,8 +29,8 @@ public class Utilities {
      */
     public Path getPathFromFileName(String fileName) throws URISyntaxException {
         final String separator = File.separator;
-        final String corpusDirectory = ConfigurationManager.getConfiguration("corpusDirectory");
-        String filePath = corpusDirectory + separator + fileName;
+        final String corpus = ConfigurationManager.getConfiguration("corpus");
+        String filePath = "corpora" + separator + corpus + separator + fileName;
         Path path = Paths.get(getClass().getClassLoader().getResource(filePath).toURI());
         return path;
     }
@@ -45,8 +45,8 @@ public class Utilities {
     /**
      * Get the corpus location
      */
-    public String getCorpusDirectory() {
-        return ConfigurationManager.getConfiguration("corpusDirectory");
+    public String getCorpus() {
+        return ConfigurationManager.getConfiguration("corpus");
     }
 
     /**

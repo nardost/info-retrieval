@@ -4,26 +4,20 @@ import opennlp.tools.stemmer.PorterStemmer;
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.tokenize.WhitespaceTokenizer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
 public class OpenNLPTokenizer implements Tokenizer {
 
     @Override
-    public Map<String, Double> tokenize(Path path) throws IOException {
+    public Map<String, Double> tokenize(String document) {
         Map<String, Double> documentVector = new HashMap<>();
         opennlp.tools.tokenize.Tokenizer tokenizer = WhitespaceTokenizer.INSTANCE;
         Stemmer stemmer = new PorterStemmer();
         StopWords stopWords = StopWords.getInstance();
-        BufferedReader bufferedReader = Files.newBufferedReader(path);
         String [] tokens;
-        String line;
-        while((line = bufferedReader.readLine()) != null) {
+        String [] lines = document.split("\n");
+        for(String line : lines) {
             /**
              * (1) Tokenize
              * (2) Remove stop words

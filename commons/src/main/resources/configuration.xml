@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <configuration>
     <property key="tokenizer" value="opennlp" />
-    <property key="corpusDirectory" value="documents" />
+    <property key="corpus" value="time" />
 </configuration>

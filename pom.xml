@@ -12,8 +12,9 @@
 
     <modules>
         <module>commons</module>
-        <module>documents</module>
+        <module>indexer</module>
         <module>preprocessor</module>
+        <module>query-processor</module>
     </modules>
 
     <properties>
