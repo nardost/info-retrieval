@@ -2,4 +2,5 @@
 <configuration>
     <property key="tokenizer" value="opennlp" />
     <property key="corpus" value="time" />
+    <property key="corporaDirEnvVar" value="CORPORA_DIR" />
 </configuration>

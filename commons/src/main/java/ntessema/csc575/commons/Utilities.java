@@ -64,7 +64,8 @@ public class Utilities {
          *
          *
          */
-        final String CORPORA_DIR = System.getenv("CORPORA_DIR");
+        final String corporaDirEnvVar = ConfigurationManager.getConfiguration("corporaDirEnvVar");
+        final String CORPORA_DIR = System.getenv(corporaDirEnvVar);
         String filePath = CORPORA_DIR + separator + corpus + separator + fileName;
         File file = new File(filePath);
         Path path = file.toPath();
