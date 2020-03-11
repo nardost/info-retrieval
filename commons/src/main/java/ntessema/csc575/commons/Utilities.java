@@ -31,7 +31,8 @@ public class Utilities {
         final String separator = File.separator;
         final String corpus = ConfigurationManager.getConfiguration("corpus");
         String filePath = "corpora" + separator + corpus + separator + fileName;
-        Path path = Paths.get(getClass().getClassLoader().getResource(filePath).toURI());
+        File file = new File(filePath);
+        Path path = file.toPath();//Paths.get(getClass().getClassLoader().getResource(filePath).toURI());
         return path;
     }
 
@@ -39,7 +40,9 @@ public class Utilities {
      * Get File object given a path string
      */
     public File getFile(String path) {
-        return new File(getClass().getClassLoader().getResource(path).getFile());
+        String fullPath = "corpora/" + path;
+        return new File(fullPath);
+        //return new File(getClass().getClassLoader().getResource(path).getFile());
     }
 
     /**

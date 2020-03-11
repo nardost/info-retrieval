@@ -26,7 +26,7 @@ public class OpenNLPTokenizer implements Tokenizer {
              *     (4) If not already in tokens, add it. Increment weight.
              *         If already in tokens, increment weight.
              */
-            tokens = tokenizer.tokenize(line);
+            tokens = tokenizer.tokenize(line.toLowerCase());
             for(String token : tokens) {
                 //TODO: remove if stop word.
                 //https://github.com/apache/opennlp-sandbox/blob/master/summarizer/src/main/java/opennlp/summarization/preprocess/StopWords.java

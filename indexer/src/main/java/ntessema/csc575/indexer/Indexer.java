@@ -27,8 +27,8 @@ public class Indexer {
             URISyntaxException {
 
         final String corpus = Utilities.getInstance().getCorpus();
-        final String corpusDirectory = "corpora" + File.separator + corpus;
-        
+        final String corpusDirectory = File.separator + corpus;
+
         List<Document> documents = new LinkedList<>();
         File documentsDirectory = Utilities.getInstance().getFile(corpusDirectory);
 
@@ -49,7 +49,7 @@ public class Indexer {
             IOException {
 
         final String corpus = Utilities.getInstance().getCorpus();
-        final String corpusDirectory = "corpora" + File.separator + corpus;
+        final String corpusDirectory = File.separator + corpus;
 
         File documentDirectory = Utilities.getInstance().getFile(corpusDirectory);
 

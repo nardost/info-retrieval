@@ -2,19 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ntessema.csc575</groupId>
-    <artifactId>indexer</artifactId>
+    <artifactId>ui</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>indexer</name>
+    <name>ui</name>
 
     <parent>
-        <groupId>ntessema.csc575</groupId>
         <artifactId>iir-project</artifactId>
+        <groupId>ntessema.csc575</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
     <dependencies>
         <dependency>
             <groupId>ntessema.csc575</groupId>
@@ -23,12 +23,7 @@
         </dependency>
         <dependency>
             <groupId>ntessema.csc575</groupId>
-            <artifactId>commons</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>ntessema.csc575</groupId>
-            <artifactId>preprocessor</artifactId>
+            <artifactId>indexer</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -55,7 +50,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>ntessema.csc575.indexer.UI</mainClass>
+                            <mainClass>ntessema.csc575.ui.WebServer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

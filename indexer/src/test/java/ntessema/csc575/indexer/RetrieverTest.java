@@ -9,6 +9,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class RetrieverTest {
     @Parameters
     public static Collection<Object> queries() {
         return Stream.of(new Object[] {
+                "CHINESE BLAMING",
                 "RED CHINESE BLAMING OF ECONOMIC TROUBLES AND THE TREATY-BREAKING WITHDRAWAL OF RUSSIAN TECHNICAL ASSISTANCE FOR SERIOUS DELAYS IN ITS DEVELOPMENT PROGRAM .",
                 "PROPOSALS FOR A UNIFIED EUROPE INDEPENDENT OF THE U.S .",
                 "EFFORTS OF AMBASSADOR HENRY CABOT LODGE TO GET VIET NAM'S PRESIDENT DIEM TO CHANGE HIS POLICIES OF POLITICAL REPRESSION."
@@ -42,8 +44,9 @@ public class RetrieverTest {
 
     @Test
     public void test_retriever() {
-        Document queryDocument = Query.createQueryFromString(queryString);
+
         try {
+            Document queryDocument = Query.createQueryFromString(queryString);
             if(queryDocument == null) {
                 System.out.println("Query is null");
                 return;
@@ -65,13 +68,12 @@ public class RetrieverTest {
                 if(count > 20) break;
                 DocumentReference reference = docRef.getKey();
                 double score = docRef.getValue();
-            //results.forEach((reference, score) -> {
                 sb.append(" ");
                 sb.append(reference.getPath().getFileName().toString().replace(".txt", ""));
                 sb.append("(" + String.format("%.3f", score) + ")");
                 sb.append(",");
                 count++;
-            }//);
+            }
             sb.replace(sb.length() - 1, sb.length(), "");
             System.out.println(sb.toString());
         } catch(IOException ioe) {

@@ -15,6 +15,7 @@
         <module>indexer</module>
         <module>preprocessor</module>
         <module>query-processor</module>
+        <module>ui</module>
     </modules>
 
     <properties>

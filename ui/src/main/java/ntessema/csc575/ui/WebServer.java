@@ -1,4 +1,4 @@
-package ntessema.csc575.indexer;
+package ntessema.csc575.ui;
 
 /*-------------------------------------------------------------------------------------
  * 1. Name: Nardos Tessema
@@ -53,12 +53,15 @@ package ntessema.csc575.indexer;
  *    truncated, and it will be padded with "..." to show that it has been truncated (just for the console display).
  *-------------------------------------------------------------------------------------------------
  */
+import ntessema.csc575.commons.Document;
+import ntessema.csc575.indexer.DocumentReference;
+import ntessema.csc575.indexer.Retriever;
+import ntessema.csc575.query.Query;
+
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.Executor;
@@ -125,7 +128,7 @@ class Response {
 public class WebServer {
 
     private static final int QUEUE_LENGTH = 6;
-    private static final int PORT = 2540;
+    private static final int PORT = 8383;
     private static final int MAX_THREADS = 100;
 
     /*
@@ -162,7 +165,7 @@ public class WebServer {
      * Valid URI characters
      * https://www.ietf.org/rfc/rfc2396.txt
      */
-    private final static String C = "[a-zA-Z0-9\\-_\\!~\\*\\'\\(\\)\\.\\+]";
+    private final static String C = "[a-zA-Z0-9\\-_\\!~\\*\\'\\(\\)\\.\\+%]";
     /*
      * The query string pattern
      * ?name=value&name=value
@@ -199,7 +202,7 @@ public class WebServer {
      */
     private static final Map<String, String> ACTIONS = Stream.of(new String [][] {
             /* key = name as it appears in form, value = name of java action method */
-            { "addnums.fake-cgi", "addnums" }
+            { "search", "search" }
     }).collect(Collectors.toMap(x -> x[0], x -> x[1]));
 
     /*
@@ -497,128 +500,7 @@ public class WebServer {
          *
          * If request is a CGI request, re-route the request to the CGI processor.
          */
-        if(requestURI.matches(CGI_URI_PATTERN)) {
-            return doCGI(requestLineTokens, decodedRequestBody, headerTokens);
-        }
-        /*
-         * If request is not a CGI request, do a regular GET request processing.
-         */
-        if(requestURI.matches(REQUEST_URI_PATTERN)) {
-            Response response = new Response();
-            /*
-             * If request uri has query string, extract it in a variable
-             */
-            String [] pathQuery = requestURI.split("\\?");
-            /*
-             * The path of the requested resource (file or directory or some dynamic content)
-             * Prepend a '.' so that file search begins from current directory.
-             */
-            String path = "." + pathQuery[0];
-
-            /*
-             * Check if a file or a directory exists at the path requested.
-             */
-            File file = new File(path);
-
-            String normalizedPath = Paths.get(file.getPath()).normalize().toString();
-
-            /*
-             * File access is risky program could read the directory structure of the server.
-             * It could navigate out of the server root and read the entire directory structure
-             * of the server computer. I tried it with a command ine tool similar to telnet - nc - and
-             * the program was able to navigate my computer up to the root directory!
-             *
-             * $nc localhost 2540
-             * GET /../../../ HTTP/1.1
-             *
-             * It looks like browsers like Firefox are aware of this kind of hacking and reformat the URI so that it stays
-             * below  the server root. Browsing http://localhost:2540/../../../ on Firefox keeps the path
-             * under the server root.
-             *
-             * The attacks that come from non-browser clients like the command lone tool I mentioned above can be
-             * stopped by examining the request uri. If the normalized uri matches the pattern "../../", it means that
-             * the client is trying to get access to directories above the server root and the program flow has to be
-             * short-circuited right there.
-             *
-             * MyWebServer sends a 403 - Forbidden response and returns when such a URI pattern is caught.
-             */
-            if(normalizedPath.matches("\\.\\..*")) {
-                /*
-                 * URI pattern "../" is caught. Send a 403 - Forbidden response.
-                 */
-                response.body = getDynamicServerMessage(403);
-                response.contentLength = response.body.getBytes().length;
-                response.contentType = "text/html";
-                response.statusCode = 403;
-                return response;
-            }
-            if(file.exists()) {
-                /*
-                 * The requested resource is found. Response status is OK = 200.
-                 */
-                response.statusCode = 200;
-
-                if(file.isDirectory()) {
-                    /*
-                     * The requested resource is a directory.
-                     * MyWebServer will display the directory listing.
-                     */
-                    response.body = generateDirectoryContentList(file);
-                    response.contentLength = response.body.getBytes().length;
-                    response.contentType = "text/html";
-                    response.cookies[0] = new Cookie("id", UUID.randomUUID().toString());
-                    response.cookies[1] = new Cookie("last-visited", LocalDateTime.now().toString());
-                } else if(file.isFile()) {
-                    /*
-                     * The requested resource is a file. MyWebServer will
-                     * send a 200 status code with the file content.
-                     *
-                     * Determine the mime type. If no mime type is found for the file extension,
-                     * we will treat the file as a plain text file (set the mime type to "text/plain").
-                     */
-                    String fileExtension = getFileExtension(path);
-                    String mimeType = (MIME_TYPES.containsKey(fileExtension)) ? MIME_TYPES.get(fileExtension) : "text/plain";
-                    response.contentType = mimeType;
-                    response.contentLength = file.length();
-                    response.lastModified = new Date(file.lastModified()).toString();
-
-                    StringBuilder sb = new StringBuilder();
-                    /*
-                     *  try-with-resources for the auto-closeable buffered reader.
-                     */
-                    try(
-                            BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(path));
-                            /*
-                             * in will be used to send binary data.
-                             */
-                            InputStream in = Files.newInputStream(Paths.get(path))) {
-                        /*
-                         * Read contents of file line by line and set it to the body of the response.
-                         */
-                        //TODO: extend for binary files here.
-                        String line;
-                        while((line = bufferedReader.readLine()) != null) {
-                            sb.append(line);
-                            sb.append("\n");
-                        }
-                        response.body = sb.toString();
-                    } catch (IOException ioe) {
-                        System.out.println("I/O Exception while reading file " + path);
-                    }
-                }
-            } else {
-                /*
-                 * 404 - File not found
-                 */
-                response.statusCode = 404;
-                response.body = getDynamicServerMessage(response.statusCode);
-                response.contentLength = response.body.getBytes().length;
-                response.contentType = "text/html";
-            }
-            return response;
-        } else {
-            return doBadRequest();
-        }
+        return doCGI(requestLineTokens, decodedRequestBody, headerTokens);
     }
 
     private static Response doPost(String [] requestLineTokens, Map<String, String> decodedRequestBody, Map<String, String> headerTokens) {
@@ -656,7 +538,7 @@ public class WebServer {
          * The CGI processor needs two things, the action method and the
          * and the key-value pairs (form input or query string data).
          */
-        String actionMethod;
+        final String actionMethod = "search";
         /*
          * We need to get the key-value pairs of the values submitted in a form
          * or in a query string.
@@ -668,7 +550,7 @@ public class WebServer {
 
         if(requestLineTokens[0].toUpperCase().equals("GET")) {
             String[] partsOfRequestURI = requestLineTokens[1].split("\\?");
-            actionMethod = (partsOfRequestURI.length == 2) ? partsOfRequestURI[0].substring(CGI_DIRECTORY.length()) : "";
+            //actionMethod = (partsOfRequestURI.length == 2) ? partsOfRequestURI[0].substring(CGI_DIRECTORY.length()) : "";
             String queryString = (partsOfRequestURI.length == 2) ? partsOfRequestURI[1] : "";
             try {
                 /*
@@ -681,10 +563,11 @@ public class WebServer {
                  * Unsupported encoding. I can't see this happening. It must be
                  * because of the HTTP request. So, send a Bad  Request response.
                  */
+                uee.printStackTrace();
                 return doBadRequest();
             }
         } else if(requestLineTokens[0].toUpperCase().equals("POST")) {
-            actionMethod = requestLineTokens[1].substring(CGI_DIRECTORY.length());
+            //actionMethod = requestLineTokens[1].substring(CGI_DIRECTORY.length());
             /*
              * KV pairs are already supplied as the second argument to this method.
              */
@@ -838,22 +721,24 @@ public class WebServer {
         sb.append("\t\t.c, .logo { font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; }\n");
         sb.append("\t\t.hilite { color: #cb4335; }\n");
         sb.append("\t\t.hilite-g { color: #229954; }\n");
-        sb.append("\t\t.c-200 { color: green }\n");
-        sb.append("\t\t.c-300 {  color: darkgray }\n");
-        sb.append("\t\t.c-400 { color: red }\n");
-        sb.append("\t\t.c-500 { color: orangered }\n");
         sb.append("\t\thr { border-top: 3px  #1f618d solid }\n");
         sb.append("\t\tth, td { padding-left: 5px; padding-right: 5px; text-align: left }\n");
-        sb.append("\t\ttable.d-list tr th { border-bottom: 1px gray dashed }\n");
+        sb.append("\t\t.button, .text { margin-right: 1px; background-color: #ffffff; border: #1f618d 2px solid; color: #1f618d; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;}\n");
+        sb.append("\t\t.button { font-weight: bold }");
         sb.append("\t</style>\n");
         sb.append("\t<title>" + title + "</title>\n");
         sb.append("</head>\n");
         sb.append("<body>\n");
         sb.append("<div class=\"logo\">\n");
-        sb.append("<h2>Nardos Tessema's Web Server</h2>\n");
-        sb.append("<strong>CSC-435: Distributed Systems I</strong><br>\n");
+        sb.append("<h2>BBC Documentary Program Finder</h2>\n");
+        sb.append("<strong>CSC-575: Intelligent Information Retrieval</strong><br>\n");
         sb.append("<span>Winter 2020</span><br>\n");
-        sb.append("<em>Prof. Clark Elliott</em><br>\n");
+        sb.append("<em>Nardos Tessema</em><br>\n");
+        sb.append("<hr>\n");
+        sb.append("<form method=\"GET\" action=\"search\">");
+        sb.append("<input type=\"text\" name=\"query\" size=\"50\" class=\"text\">");
+        sb.append("<input type=\"submit\" value=\"SEARCH BBC RADIO\" class=\"button\">");
+        sb.append("</form>");
         sb.append("<hr>\n");
         sb.append("</div>\n");
         return sb.toString();
@@ -883,86 +768,6 @@ public class WebServer {
         return sb.toString();
     }
 
-    /**
-     * Generate HTML that lists contents of a directory
-     *
-     * @param file The directory whose contents will be listed.
-     */
-    private static String generateDirectoryContentList(File file) {
-        String serverAddress;
-        try {
-            serverAddress = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + PORT + "/";
-        } catch(UnknownHostException uhe) {
-            /*
-             * It is unlikely that we will get here.
-             */
-            serverAddress = "http://localhost:" + PORT + "/";
-        }
-        /*
-         * Remove redundancies.
-         * Examples:
-         *      ./one/two/ => one/two
-         *      ./ => (root directory)
-         */
-        String normalizedPath = Paths.get(file.getPath()).normalize().toString();
-
-        /*
-         * If we are at the root directory, normalizedPath is the empty string, which means
-         * there is no need for a forward slash to separate serverAddress from the directory path.
-         * (serverAddress is formatted with a trailing forward slash above.)
-         * "http://localhost:2540/" + "dog.txt"
-         *
-         * Otherwise, there needs to be a forward slash to separate the directory path from
-         * the file name or directory path under it.
-         * "http://localhost:2540/" + "one/two" + "/" + "dog.txt"
-         */
-        normalizedPath = (normalizedPath.equals("")) ? normalizedPath : normalizedPath + "/";
-        String parent = file.getParent();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(generatePreHtml("Directory Listing"));
-        sb.append("<h3>Index of " + "<span class=\"hilite\">/" + normalizedPath + "</span></h3>");
-        sb.append("<table class=\"d-list\">\n");
-        sb.append("<tr><th>Name</th><th>Last Modified</th><th>Size</th><th>Description</th></tr>\n");
-        /*
-         * If not in the root directory, get a link to the parent directory.
-         */
-        if(parent != null) {
-            sb.append("<tr>");
-            sb.append("<td><a href=\"" + serverAddress + Paths.get(file.getParent()).normalize().toString() + "\">Parent Directory</a></td>\n");
-            sb.append("<td colspan=\"3\"></td>\n");
-            sb.append("</tr>\n");
-        }
-        /*
-         * Iterate over the contents of the directory and list them in a table.
-         * Columns of the table are:
-         * (1) Name - name of file or sub-directory
-         * (2) Last modified - The last modified  date attribute
-         * (3) Size - The size in bytes
-         * (4) Description - Any description available.
-         *                   Mime type, if known.
-         *                   "/.." if it is a directory
-         *                   "*" if  no description if available...
-         */
-        for(String content : file.list()) {
-            File f = new File(file.getPath() + "/" + content);
-            String description = "";
-            if(f.isDirectory()) {
-                description = "/..";
-            } else if(f.isFile()) {
-                description = (MIME_TYPES.containsKey(getFileExtension(content)) ? MIME_TYPES.get(getFileExtension(content)) : "*");
-            }
-            sb.append("<tr>\n");
-            sb.append("<td><a href=\"" + serverAddress + normalizedPath + content+ "\">" + content + "</a></td>\n");
-            sb.append("<td>" + new Date(f.lastModified()) + "</td>\n");
-            sb.append("<td>" + f.length() + "</td>\n");
-            sb.append("<td>" + description + "</td>\n");
-            sb.append("</tr>\n");
-        }
-        sb.append("</table>\n");
-        sb.append(generatePostHtml());
-        return sb.toString();
-    }
 
     /**
      * Read request lines. There could be multiple lines per request.
@@ -1072,7 +877,7 @@ public class WebServer {
                  * Accept only US-ASCII for the keys, UTF-8 for the values.
                  * Reason: The keys will eventually be used as variable names.
                  */
-                decodedRequestBody.put(URLDecoder.decode(keyValue[0], "US-ASCII"), URLDecoder.decode(keyValue[1], "UTF-8"));
+                decodedRequestBody.put(URLDecoder.decode(keyValue[0], "US-ASCII"), URLDecoder.decode(keyValue[1], "US-ASCII"));
             }
         }
         return decodedRequestBody;
@@ -1314,11 +1119,9 @@ public class WebServer {
      * an argument and return a String (formatted HTML).
      *
      * This particular action method expects the following form inputs:
-     *      (1) person - expected to be a string
-     *      (2) num1 - expected to be a number
-     *      (3) num2 - expected to be a number
+     *      (1) query - expected to be a string
      */
-    private static String addnums(Map<String, String> kv) {
+    private static String search(Map<String, String> kv) {
         /*
          * The HTML that will be generated by this action method
          */
@@ -1327,38 +1130,51 @@ public class WebServer {
         /*
          * The variables this action expects to be supplied with
          */
-        String person;
-        int num1;
-        int num2;
+        String query;
 
         if(kv.isEmpty()) {
             /*
              * No arguments passed by client.
              */
-            innerHtml = "<h1 class=\"hilite\">No input received.</h1>";
+            innerHtml = "";
         } else {
             StringBuilder sb = new StringBuilder();
-            sb.append("<div class=\"action add\">\n");
+            sb.append("<div>\n");
             sb.append("<table>\n");
-            sb.append("\t<tr><th>Key</th><th>Value</th></tr>\n");
-            kv.forEach((k,v) -> {
-                sb.append("\t<tr><td>" + k + "</td><td>" + v + "</td><tr>\n");
-            });
-            person = kv.get("person");
-            String result;
+            sb.append("\t<tr><td colspan=\"2\">");
+
+            sb.append("</td></tr>");
+            query = kv.get("query");
+            sb.append("\t<tr><td colspan=\"2\">SEARCH RESULTS FOR<br>" + query + "</td></tr>\n");
+
+            Retriever retriever = new Retriever();
+
             try {
-                num1 = Integer.parseInt(kv.get("num1"));
-                num2 = Integer.parseInt(kv.get("num2"));
+                Document queryDocument = Query.createQueryFromString(query);
+                Map<DocumentReference, Double> results = retriever.retrieve(queryDocument);
+                if(results == null) {
+                    System.out.println("No documents returned.");
+                    //TODO redirect
+                }
+                queryDocument.getDocumentVector().forEach((term, weight) -> {
+                    System.out.println("Query Term: " + term + ", Weight: " + weight);
+                });
+                System.out.println(results.size());
+                for(Map.Entry<DocumentReference, Double> docRef : results.entrySet()) {
+                    DocumentReference reference = docRef.getKey();
+                    double score = docRef.getValue();
+                    sb.append("<tr><td>");
+                    sb.append(reference.getPath().getFileName().toString().replace(".txt", ""));
+                    sb.append("</td><td>");
+                    sb.append(String.format("%.3f", score));
+                    sb.append("</td></tr>");
+                }
 
-                result = "<em class=\"hilite-g\">" + kv.get("num1") + " + " + kv.get("num2") + " = " + Integer.toString(num1 + num2) + "</em>";
-
-            } catch (NumberFormatException nfe) {
-                result = "<em class=\"hilite\">Only integers allowed.</em>";
+            } catch (IOException ioe) {
+                //TODO redirect to error page
+            } catch (URISyntaxException use) {
+                //TODO redirect to error page
             }
-            sb.append("\t<tr>");
-            sb.append("<td style=\"border-top: 1px gray dotted\"><em>Dear " + person + ",</em></td>");
-            sb.append("<td style=\"border-top: 1px gray dotted\"><h2>" + result + "</h2></td>");
-            sb.append("</tr>\n");
             sb.append("</table>\n");
             sb.append("</div>\n");
             innerHtml = sb.toString();
@@ -1371,4 +1187,3 @@ public class WebServer {
     }
 
 }
-
