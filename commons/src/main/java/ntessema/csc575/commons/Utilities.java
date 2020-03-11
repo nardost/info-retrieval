@@ -27,12 +27,47 @@ public class Utilities {
     /**
      * Get the Path object associated with a document in the corpus directory
      */
-    public Path getPathFromFileName(String fileName) throws URISyntaxException {
+    public Path getPathFromFileName(String fileName) {
         final String separator = File.separator;
         final String corpus = ConfigurationManager.getConfiguration("corpus");
-        String filePath = "corpora" + separator + corpus + separator + fileName;
+        /*
+         * Make file access machine independent.
+         * Declare and environment variable CORPORA_DIR
+         * and set it to the directory in which the various corpora live.
+         * For example, in my mac osx machine, the various corpora I am using
+         * live in /Users/nardos/Documents/corpora/. Therefore, the env variable
+         * will be set as $export CORPORA_DIR=/Users/nardos/Documents/corpora
+         *
+               /Users/nardos/Documents/corpora/
+                    ├── documents
+                    │   ├── 1.txt
+                    │   ├── 10.txt
+                    │   ├── 2.txt
+                    │   ├── 3.txt
+                    │   ├── 4.txt
+                    │   ├── 5.txt
+                    │   ├── 6.txt
+                    │   ├── 7.txt
+                    │   ├── 8.txt
+                    │   └── 9.txt
+                    ├── test
+                    │   ├── 1.txt
+                    │   ├── 2.txt
+                    │   └── 3.txt
+                    └── time
+                        ├── 1.txt
+                        ├── 10.txt
+                        ├── 100.txt
+                        ├── 101.txt
+                        ├── 102.txt
+                        ├── 103.txt
+         *
+         *
+         */
+        final String CORPORA_DIR = System.getenv("CORPORA_DIR");
+        String filePath = CORPORA_DIR + separator + corpus + separator + fileName;
         File file = new File(filePath);
-        Path path = file.toPath();//Paths.get(getClass().getClassLoader().getResource(filePath).toURI());
+        Path path = file.toPath();
         return path;
     }
 
@@ -40,9 +75,9 @@ public class Utilities {
      * Get File object given a path string
      */
     public File getFile(String path) {
-        String fullPath = "corpora/" + path;
+        final String CORPORA_DIR = System.getenv("CORPORA_DIR");
+        String fullPath = CORPORA_DIR + File.separator + path;
         return new File(fullPath);
-        //return new File(getClass().getClassLoader().getResource(path).getFile());
     }
 
     /**
