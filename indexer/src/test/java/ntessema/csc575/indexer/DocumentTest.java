@@ -2,6 +2,7 @@ package ntessema.csc575.indexer;
 
 import ntessema.csc575.documents.Document;
 import ntessema.csc575.documents.DocumentReference;
+import ntessema.csc575.documents.DocumentUtilities;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -53,8 +54,8 @@ public class DocumentTest {
     @Test @Ignore
     public void  read_document_from_file_and_build_a_vector() {
         try {
-            Document document = indexer.getDocumentFromFile(fileName);
-            DocumentReference reference = indexer.getDocumentReferenceFromFile(fileName);
+            Document document = DocumentUtilities.getDocumentFromFile(fileName);
+            DocumentReference reference = DocumentUtilities.getDocumentReferenceFromFile(fileName);
             assertThat(document.getId(), is(equalTo(reference.getPath().getFileName().toString())));
         } catch (IOException ioe) {
             ioe.printStackTrace();

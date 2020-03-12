@@ -23,9 +23,17 @@ public class QueryController {
     @Autowired
     private QueryService queryService;
 
+    @GetMapping("/")
+    public String home(Model model) {
+        return "home";
+    }
+
     @GetMapping("/search")
-    public String home(@RequestParam String query, Model model) {
+    public String search(@RequestParam String query, Model model) {
         try {
+            if(query == null || query.equals("")) {
+                return "home";
+            }
             Map<DocumentReference, Double> results = queryService.getResults(Query.createQueryFromString(query));
             Map<String, Double> docWithScore = new LinkedHashMap<>();
             for(Map.Entry<DocumentReference, Double> result : results.entrySet()) {

@@ -1,6 +1,7 @@
 package ntessema.csc575.indexer;
 
 import ntessema.csc575.documents.Document;
+import ntessema.csc575.documents.DocumentUtilities;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +23,7 @@ public class GetAllDocumentsTest {
     @Test
     public void get_all_documents_in_the_corpus() {
         try {
-            List<Document> documents = indexer.getAllDocuments();
+            List<Document> documents = DocumentUtilities.getAllDocuments();
             System.out.println("Number of documents: " + documents.size());
             StringBuilder sb = new StringBuilder();
             documents.forEach(document -> {

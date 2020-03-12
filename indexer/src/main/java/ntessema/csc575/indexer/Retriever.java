@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
 
 public class Retriever {
 
+    /**
+     * Given a query (in Document form) retrieve all the results.
+     * Algorithm in slides # 18 & 19.
+     */
     public Map<DocumentReference, Double> retrieve(Document query) throws
             IOException,
             URISyntaxException {
@@ -87,7 +91,9 @@ public class Retriever {
         }
 
         /*
-         * sort results by score
+         * sort results by score. HashMap does not guarantee
+         * sorted iteration. So we collect the sorted results
+         * in a LinkedHashMap.
          */
         Map<DocumentReference, Double> sortedByScoreDescending = results
                 .entrySet()
@@ -113,33 +119,5 @@ public class Retriever {
             accumulator += weight * weight;
         }
         return Math.sqrt(accumulator);
-    }
-
-
-    /**
-     * Quick and dirty method to test UI
-     * @param term
-     * @return
-     */
-    public String search(String term) {
-        Map<String, Double> queryVector = new HashMap<>();
-        Double frequency = 1.0;
-        Document query = new Document("Test-Query", queryVector);
-        queryVector.put(term, frequency);
-        String result = null;
-        try {
-            Map<DocumentReference, Double> results = retrieve(query);
-            StringBuilder sb = new StringBuilder();
-            results.forEach((reference, score) -> {
-                sb.append(term + ": " + reference.getPath().getFileName().toString() + " -------> " + score);
-                sb.append("\n");
-            });
-            result = sb.toString();
-        } catch(IOException ioe) {
-            ioe.printStackTrace();
-        } catch (URISyntaxException use) {
-            use.printStackTrace();
-        }
-        return result;
     }
 }

@@ -1,9 +1,7 @@
 package ntessema.csc575.indexer;
 
 import ntessema.csc575.documents.Document;
-import ntessema.csc575.preprocessor.TokenizerFactory;
-import ntessema.csc575.preprocessor.Tokenizer;
-import org.junit.Before;
+import ntessema.csc575.documents.DocumentUtilities;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -16,19 +14,12 @@ import static org.hamcrest.Matchers.is;
 
 public class TokenizerTest {
 
-    private Tokenizer tokenizer;
-
-    @Before
-    public void init() {
-        this.tokenizer = TokenizerFactory.createTokenizer();
-    }
-
     @Test
     public void test_tokenizer_with_console_outputs() {
         try {
             final String fName = "1.txt";
 
-            Document document = new Indexer().getDocumentFromFile(fName);
+            Document document = DocumentUtilities.getDocumentFromFile(fName);
             //Double max = document.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getValue();
             System.out.println(document.getId());
             document.getDocumentVector().forEach((term, weight) -> {
