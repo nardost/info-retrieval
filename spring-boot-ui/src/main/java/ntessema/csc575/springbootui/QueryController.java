@@ -29,7 +29,7 @@ public class QueryController {
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam String query, Model model) {
+    public String search(@RequestParam(required = false) String query, Model model) {
         try {
             if(query == null || query.equals("")) {
                 return "home";
