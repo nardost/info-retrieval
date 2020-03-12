@@ -1,7 +1,7 @@
 package ntessema.csc575.ui;
 
 import ntessema.csc575.commons.Document;
-import ntessema.csc575.indexer.DocumentReference;
+import ntessema.csc575.commons.DocumentReference;
 import ntessema.csc575.indexer.Retriever;
 import ntessema.csc575.query.Query;
 

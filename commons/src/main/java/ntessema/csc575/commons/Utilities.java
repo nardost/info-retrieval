@@ -26,44 +26,42 @@ public class Utilities {
 
     /**
      * Get the Path object associated with a document in the corpus directory
+     * Make file access machine independent.
+     * Declare and environment variable CORPORA_DIR
+     * and set it to the directory in which the various corpora live.
+     * For example, in my mac osx machine, the various corpora I am using
+     * live in /Users/nardos/Documents/corpora/. Therefore, the env variable
+     * will be set as $export CORPORA_DIR=/Users/nardos/Documents/corpora
+     *
+           /Users/nardos/Documents/corpora/
+                ├── documents
+                │   ├── 1.txt
+                │   ├── 10.txt
+                │   ├── 2.txt
+                │   ├── 3.txt
+                │   ├── 4.txt
+                │   ├── 5.txt
+                │   ├── 6.txt
+                │   ├── 7.txt
+                │   ├── 8.txt
+                │   └── 9.txt
+                ├── test
+                │   ├── 1.txt
+                │   ├── 2.txt
+                │   └── 3.txt
+                └── time
+                    ├── 1.txt
+                    ├── 10.txt
+                    ├── 100.txt
+                    ├── 101.txt
+                    ├── 102.txt
+                    ├── 103.txt
+     *
+     *
      */
     public Path getPathFromFileName(String fileName) {
         final String separator = File.separator;
         final String corpus = ConfigurationManager.getConfiguration("corpus");
-        /*
-         * Make file access machine independent.
-         * Declare and environment variable CORPORA_DIR
-         * and set it to the directory in which the various corpora live.
-         * For example, in my mac osx machine, the various corpora I am using
-         * live in /Users/nardos/Documents/corpora/. Therefore, the env variable
-         * will be set as $export CORPORA_DIR=/Users/nardos/Documents/corpora
-         *
-               /Users/nardos/Documents/corpora/
-                    ├── documents
-                    │   ├── 1.txt
-                    │   ├── 10.txt
-                    │   ├── 2.txt
-                    │   ├── 3.txt
-                    │   ├── 4.txt
-                    │   ├── 5.txt
-                    │   ├── 6.txt
-                    │   ├── 7.txt
-                    │   ├── 8.txt
-                    │   └── 9.txt
-                    ├── test
-                    │   ├── 1.txt
-                    │   ├── 2.txt
-                    │   └── 3.txt
-                    └── time
-                        ├── 1.txt
-                        ├── 10.txt
-                        ├── 100.txt
-                        ├── 101.txt
-                        ├── 102.txt
-                        ├── 103.txt
-         *
-         *
-         */
         final String corporaDirEnvVar = ConfigurationManager.getConfiguration("corporaDirEnvVar");
         final String CORPORA_DIR = System.getenv(corporaDirEnvVar);
         String filePath = CORPORA_DIR + separator + corpus + separator + fileName;
@@ -82,14 +80,15 @@ public class Utilities {
     }
 
     /**
-     * Get the corpus location
+     * Get the corpus currently being used (time, bbc, etc.)
      */
     public String getCorpus() {
         return ConfigurationManager.getConfiguration("corpus");
     }
 
     /**
-     * Stringify a list (the toString() method must have been overridden)
+     * Stringify a list (the toString() method must have been overridden).
+     * This method is used in my tests to print linked lists contents.
      */
     public <T> String listToString(List<T> list) {
         StringBuilder sb = new StringBuilder();

@@ -1,6 +1,4 @@
-package ntessema.csc575.indexer;
-
-import ntessema.csc575.commons.DocumentException;
+package ntessema.csc575.commons;
 
 import java.nio.file.Path;
 

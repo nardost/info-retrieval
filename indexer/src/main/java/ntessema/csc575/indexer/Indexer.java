@@ -2,6 +2,7 @@ package ntessema.csc575.indexer;
 
 import ntessema.csc575.commons.BBCDocument;
 import ntessema.csc575.commons.Document;
+import ntessema.csc575.commons.DocumentReference;
 import ntessema.csc575.commons.Utilities;
 import ntessema.csc575.preprocessor.Tokenizer;
 import ntessema.csc575.preprocessor.TokenizerFactory;

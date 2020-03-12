@@ -1,6 +1,7 @@
 package ntessema.csc575.indexer;
 
 import ntessema.csc575.commons.DocumentException;
+import ntessema.csc575.commons.DocumentReference;
 
 public class TokenOccurrence {
 
