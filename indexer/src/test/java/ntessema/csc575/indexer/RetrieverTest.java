@@ -4,6 +4,7 @@ import ntessema.csc575.commons.ConfigurationManager;
 import ntessema.csc575.commons.Document;
 import ntessema.csc575.query.Query;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -127,7 +128,7 @@ public class RetrieverTest {
         retriever = new Retriever();
     }
 
-    @Test
+    @Test @Ignore
     public void test_retriever() {
 
         /*

@@ -1,3 +1,16 @@
+/**
+ * I wrote this mini web server as a class assignment for CSC435 (Dr Clark Elliott).
+ * It was submitted on February 9, 2020.
+ *
+ * I could not re-write this project to run on a servlet engine, and I had
+ * to rely on this piece of software for the user interface.
+ *
+ * It is a working software. However, it has not been tested thoroughly.
+ * For the purposes of this project, it works very well. I haven't encountered
+ * any issues.
+ *
+ * It will run on port 8383.
+ */
 package ntessema.csc575.ui;
 
 /*-------------------------------------------------------------------------------------

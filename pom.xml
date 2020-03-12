@@ -16,6 +16,7 @@
         <module>preprocessor</module>
         <module>query-processor</module>
         <module>ui</module>
+        <module>spring-boot-ui</module>
     </modules>
 
     <properties>

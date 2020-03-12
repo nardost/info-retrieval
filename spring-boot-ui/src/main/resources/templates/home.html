@@ -1,0 +1,36 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<style>
+hr { border-top: 3px  #1f618d solid }
+.logo h2 { color: #1f618d }
+.logo { color: #0e6655; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; }
+.button, .text {
+    font-weight: bold;
+    margin-right: 1px; background-color:
+    #ffffff; border: #1f618d 2px solid;
+    color: #1f618d; padding: 15px 32px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.text { text-align: left; }
+.button { text-align: center; }
+</style>
+<title th:text="${applicationName}">CSC 575: Intelligent Information Retrieval Final Project</title>
+</head>
+<body>
+<div class="logo">
+    <h2>BBC Documentary Program Finder</h2>
+    <strong>CSC-575: Intelligent Information Retrieval</strong><br>
+    <span>Winter 2020</span><br>
+    <spa>Nardos Tessema</spa><br>
+    <hr>
+    <form method="GET" action="search">
+        <input type="text" name="query" size="50" class="text">
+        <input type="submit" value="SEARCH BBC RADIO" class="button">
+    </form>
+    <hr>
+</div>
+</body>
+</html>
