@@ -1,6 +1,5 @@
 package ntessema.csc575.preprocessor;
 
-import ntessema.csc575.commons.PreprocessorException;
 import ntessema.csc575.commons.ConfigurationManager;
 
 public class TokenizerFactory {

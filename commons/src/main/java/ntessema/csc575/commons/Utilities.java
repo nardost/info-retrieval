@@ -1,9 +1,7 @@
 package ntessema.csc575.commons;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class Utilities {

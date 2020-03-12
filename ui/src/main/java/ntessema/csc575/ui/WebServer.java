@@ -66,8 +66,8 @@ package ntessema.csc575.ui;
  *    truncated, and it will be padded with "..." to show that it has been truncated (just for the console display).
  *-------------------------------------------------------------------------------------------------
  */
-import ntessema.csc575.commons.Document;
-import ntessema.csc575.commons.DocumentReference;
+import ntessema.csc575.documents.Document;
+import ntessema.csc575.documents.DocumentReference;
 import ntessema.csc575.indexer.Retriever;
 import ntessema.csc575.query.Query;
 

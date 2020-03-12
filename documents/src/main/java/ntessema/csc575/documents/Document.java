@@ -1,4 +1,4 @@
-package ntessema.csc575.commons;
+package ntessema.csc575.documents;
 
 import java.util.Comparator;
 import java.util.Map;

@@ -1,6 +1,6 @@
 package ntessema.csc575.springbootui;
 
-import ntessema.csc575.commons.DocumentReference;
+import ntessema.csc575.documents.DocumentReference;
 import ntessema.csc575.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

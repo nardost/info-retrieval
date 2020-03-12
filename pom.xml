@@ -17,6 +17,7 @@
         <module>query-processor</module>
         <module>ui</module>
         <module>spring-boot-ui</module>
+        <module>documents</module>
     </modules>
 
     <properties>

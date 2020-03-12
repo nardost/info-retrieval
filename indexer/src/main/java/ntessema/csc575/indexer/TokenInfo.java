@@ -1,6 +1,6 @@
 package ntessema.csc575.indexer;
 
-import ntessema.csc575.commons.DocumentException;
+import ntessema.csc575.documents.DocumentException;
 
 import java.util.LinkedList;
 import java.util.List;

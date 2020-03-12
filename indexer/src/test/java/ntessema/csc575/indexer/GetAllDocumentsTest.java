@@ -1,6 +1,6 @@
 package ntessema.csc575.indexer;
 
-import ntessema.csc575.commons.Document;
+import ntessema.csc575.documents.Document;
 import org.junit.Before;
 import org.junit.Test;
 

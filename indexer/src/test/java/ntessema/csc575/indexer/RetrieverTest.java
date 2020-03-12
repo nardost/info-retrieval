@@ -1,8 +1,8 @@
 package ntessema.csc575.indexer;
 
 import ntessema.csc575.commons.ConfigurationManager;
-import ntessema.csc575.commons.Document;
-import ntessema.csc575.commons.DocumentReference;
+import ntessema.csc575.documents.Document;
+import ntessema.csc575.documents.DocumentReference;
 import ntessema.csc575.query.Query;
 import org.junit.Before;
 import org.junit.Ignore;

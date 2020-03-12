@@ -1,7 +1,7 @@
 package ntessema.csc575.springbootui;
 
-import ntessema.csc575.commons.Document;
-import ntessema.csc575.commons.DocumentReference;
+import ntessema.csc575.documents.Document;
+import ntessema.csc575.documents.DocumentReference;
 import ntessema.csc575.indexer.Retriever;
 import org.springframework.stereotype.Service;
 

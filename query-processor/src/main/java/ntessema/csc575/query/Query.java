@@ -1,6 +1,6 @@
 package ntessema.csc575.query;
 
-import ntessema.csc575.commons.Document;
+import ntessema.csc575.documents.Document;
 import ntessema.csc575.preprocessor.Tokenizer;
 import ntessema.csc575.preprocessor.TokenizerFactory;
 

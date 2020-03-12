@@ -1,6 +1,6 @@
 package ntessema.csc575.indexer;
 
-import ntessema.csc575.commons.Document;
+import ntessema.csc575.documents.Document;
 import ntessema.csc575.preprocessor.TokenizerFactory;
 import ntessema.csc575.preprocessor.Tokenizer;
 import org.junit.Before;
