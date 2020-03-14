@@ -20,17 +20,29 @@ hr { border-top: 3px  #1f618d solid }
 <title th:text="${applicationName}">CSC 575: Intelligent Information Retrieval Final Project</title>
 </head>
 <body>
-<div class="logo">
-    <h2>BBC Program Finder</h2>
-    <strong>CSC-575: Intelligent Information Retrieval</strong><br>
-    <span>Winter 2020</span><br>
-    <spa>Nardos Tessema</spa><br>
+<div>
+    <div class="logo">
+        <h2>BBC Program Finder</h2>
+        <strong>CSC-575: Intelligent Information Retrieval</strong><br>
+        <span>Winter 2020</span><br>
+        <spa>Nardos Tessema</spa><br>
+    </div>
     <hr>
-    <form method="GET" action="search">
-        <input type="text" name="query" size="50" class="text">
-        <input type="submit" value="SEARCH BBC RADIO" class="button">
-    </form>
+    <div class="search">
+        <form method="GET" action="search">
+            <input type="text" name="query" size="50" class="text">
+            <input type="submit" value="SEARCH BBC RADIO" class="button">
+        </form>
+    </div>
     <hr>
+    <div class="results">
+        <table>
+        <tr th:each="results: ${results}">
+            <td><a th:href="${results.key}"><span th:text="${results.value.title}"></span></a></td>
+            <td th:text="${results.value.program}"></td>
+        </tr>
+        </table>
+    </div>
 </div>
 </body>
 </html>
