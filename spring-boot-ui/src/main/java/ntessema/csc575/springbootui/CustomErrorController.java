@@ -13,7 +13,11 @@ import javax.servlet.http.HttpServletRequest;
  * to the search home page.
  */
 public class CustomErrorController implements ErrorController {
-
+    /*
+     * Normally we would have a separate page for each
+     * error status. But we just need to go to the search
+     * home page if any error occurs.
+     */
     @RequestMapping("/error")
     public String redirectErrorToHomePage(HttpServletRequest request) {
         Object httpStatus = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
