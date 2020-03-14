@@ -1,31 +1,37 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<meta charset="UTF-8">
-<style>
-hr { border-top: 3px  #1f618d solid }
-.logo h2 { color: #1f618d }
-.logo { color: #0e6655; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; }
-.button, .text {
-    font-weight: bold;
-    margin-right: 1px;
-    border: #1f618d 2px solid;
-    padding: 15px 32px;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-.text { text-align: left; background-color: #ffffff; color: #1f618d; }
-.button { text-align: center; background-color: #1f618d; color: #ffffff; }
-</style>
-<title th:text="${applicationName}">CSC 575: Intelligent Information Retrieval Final Project</title>
+<head>
+    <meta charset="UTF-8">
+    <style>
+    hr { border-top: 3px  #1f618d solid }
+    .logo h2 { color: #1f618d }
+    .logo { color: #0e6655; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; }
+    .button, .text {
+        font-weight: bold;
+        margin-right: 1px;
+        border: #1f618d 2px solid;
+        padding: 15px 32px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+    .text { text-align: left; background-color: #ffffff; color: #1f618d; }
+    .button { text-align: center; background-color: #1f618d; color: #ffffff; }
+    </style>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <title th:text="${applicationName}">CSC 575: Intelligent Information Retrieval Final Project</title>
 </head>
 <body>
-<div>
-    <div class="logo">
-        <h2>BBC Program Finder</h2>
-        <strong>CSC-575: Intelligent Information Retrieval</strong><br>
-        <span>Winter 2020</span><br>
-        <spa>Nardos Tessema</spa><br>
+<div class="container">
+    <div>
+        <h2 class="display-3">BBC Program Finder</h2>
+        <h4>
+            CSC-575: Intelligent Information Retrieval<br>
+            <small class="text-muted">Winter 2020</small><br>
+            <small class="text-muted">Nardos Tessema</small>
+        </h4>
     </div>
     <hr>
     <div class="search">
@@ -36,13 +42,15 @@ hr { border-top: 3px  #1f618d solid }
     </div>
     <hr>
     <div class="results">
-        <table>
-        <tr th:each="result : ${results}">
-            <td><a th:href="${result.key}" th:text="${result.value.title}"></a></td>
-            <td th:text="${result.value.program}"></td>
-            <td th:text="${result.value.date}"></td>
-        </tr>
-        </table>
+        <div th:each="result : ${results}">
+            <h3><a th:href="${result.key}" th:text="${result.value.title}"></a></h3>
+            <strong th:text="${result.value.program}" class="text-info"></strong>
+            <blockquote class="lead">
+                <p th:text="${result.value.synopsis}"></p>
+                <footer class="blockquote-footer text-success">Last on: <span th:text="${result.value.date}"></span></footer>
+            </blockquote>
+            <hr>
+        </div>
     </div>
 </div>
 </body>
