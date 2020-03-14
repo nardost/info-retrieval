@@ -22,8 +22,7 @@ public class Retriever {
 
         Map<String, Double> queryVector = query.getDocumentVector();
 
-        Indexer indexer = new Indexer();
-        Map<String, TokenInfo> invertedIndex = indexer.createInvertedIndex();
+        Map<String, TokenInfo> invertedIndex = Indexer.getInstance().getInvertedIndex();
 
         for(Map.Entry<String, Double> queryTerm : queryVector.entrySet()) {
             String token = queryTerm.getKey();

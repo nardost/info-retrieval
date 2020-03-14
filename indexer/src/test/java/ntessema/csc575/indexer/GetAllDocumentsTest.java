@@ -2,7 +2,6 @@ package ntessema.csc575.indexer;
 
 import ntessema.csc575.documents.Document;
 import ntessema.csc575.documents.DocumentUtilities;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -10,15 +9,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 public class GetAllDocumentsTest {
-
-
-    private Indexer indexer;
-
-    @Before
-    public void init() {
-        this.indexer = new Indexer();
-
-    }
 
     @Test
     public void get_all_documents_in_the_corpus() {

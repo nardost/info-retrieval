@@ -8,13 +8,62 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
 
+
+/**
+ * Indexer is a singleton class that contains the inverted index
+ * as a member variable.
+ *
+ * This class has to be a singleton to make sure that the inverted
+ * index is constructed only once.
+ *
+ * This makes sure that the a new indexer does not get constructed
+ * every time a new query comes.
+ */
 public class Indexer {
+
+    /*
+     * The single Indexer instance.
+     */
+    private static Indexer INDEXER = null;
+    /*
+     * The inverted index. There is only once inverted
+     * index because there is only one Index instance.
+     */
+    private Map<String, TokenInfo> invertedIndex;
+
+    /*
+     * Constructor invoked only once if the inverted index is null.
+     * The inverted index is also constructed only once since it is
+     * inside the constructor which get invoked only once.
+     */
+    private Indexer() throws IOException, URISyntaxException {
+        this.invertedIndex = createInvertedIndex();
+    }
+
+    /*
+     * This method returns the SINGLE Indexer instance. The first time
+     * the instance is created, the inverted index is also constructed.
+     */
+    public static Indexer getInstance() throws IOException, URISyntaxException {
+        if(INDEXER == null)  {
+            synchronized (Indexer.class) {
+                if(INDEXER == null) {
+                    INDEXER = new Indexer();
+                }
+            }
+        }
+        return INDEXER;
+    }
+
+    public Map<String, TokenInfo> getInvertedIndex() {
+        return invertedIndex;
+    }
 
     /**
      * Create an inverted index.
      * Algorithm from slide # 10 & 13.
      */
-    public Map<String, TokenInfo> createInvertedIndex() throws
+    private Map<String, TokenInfo> createInvertedIndex() throws
             IOException,
             URISyntaxException {
 

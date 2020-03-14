@@ -24,7 +24,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class DocumentTest {
 
     private String fileName;
-    private Indexer indexer;
 
     public DocumentTest(String fileName) {
         this.fileName = fileName;
@@ -44,11 +43,6 @@ public class DocumentTest {
                 "9.txt" ,
                 "10.txt",
         }).collect(Collectors.toList());
-    }
-
-    @Before
-    public void init() {
-        indexer = new Indexer();
     }
 
     @Test @Ignore

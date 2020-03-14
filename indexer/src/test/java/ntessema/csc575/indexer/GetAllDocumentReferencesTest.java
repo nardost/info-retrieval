@@ -2,7 +2,7 @@ package ntessema.csc575.indexer;
 
 import ntessema.csc575.documents.DocumentReference;
 import ntessema.csc575.documents.DocumentUtilities;
-import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -11,14 +11,7 @@ import java.util.Map;
 
 public class GetAllDocumentReferencesTest {
 
-    private Indexer indexer;
-
-    @Before
-    public void init() {
-        indexer = new Indexer();
-    }
-
-    @Test
+    @Test @Ignore
     public void all_documents_are_loaded_in_the_hash_map() {
         try {
             Map<String, DocumentReference> references = DocumentUtilities.getAllDocumentReferences();
