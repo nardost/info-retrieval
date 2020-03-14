@@ -115,6 +115,10 @@ public class DocumentUtilities {
      * @throws IOException
      */
     public static BBCDocument getBBCDocumentFromFile(Path path) throws IOException {
+        /*
+         * Limit the number of characters in the synopsis of an episode.
+         */
+        final int SYNOPSIS_CHAR_LIMIT = 1000;
         List<String> lines = Files.readAllLines(path);
 
         String program;
@@ -157,13 +161,19 @@ public class DocumentUtilities {
                 sb.append(lines.get(i));
                 sb.append("\n");
             }
-            synopsis = sb.toString();
+            /*
+             * The "Show less" string is everywhere. Remove it here.
+             */
+            synopsis = sb.toString().replace("Show less", "");
         }
         return new BBCDocument(path.getFileName().toString(),
                 program,
                 title,
                 link,
                 date,
-                synopsis);
+                /*
+                 * If synopsis length exceeds limit, truncate and append "..."
+                 */
+                (synopsis.length() > SYNOPSIS_CHAR_LIMIT) ? synopsis.substring(0, SYNOPSIS_CHAR_LIMIT) + "..." : synopsis);
     }
 }

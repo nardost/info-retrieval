@@ -26,7 +26,7 @@
 <body>
 <div class="container">
     <div>
-        <h2 class="display-3">BBC Program Finder</h2>
+        <h2 class="display-4">BBC Program Finder</h2>
         <h4>
             CSC-575: Intelligent Information Retrieval<br>
             <small class="text-muted">Winter 2020</small><br>
@@ -41,8 +41,11 @@
         </form>
     </div>
     <hr>
-    <small class="text-info">Results retrieved: <em th:text="${numberOfResults}"></em></small>
-    <hr>
+    <div class="text-info" th:if="${numberOfResults != null}">
+        <p>Results retrieved: <strong th:text="${numberOfResults}"></strong></p>
+        <hr>
+    </div>
+
     <div class="results">
         <div th:each="result : ${results}">
             <h3><a th:href="${result.key}" th:text="${result.value.title}"></a></h3>
@@ -54,17 +57,17 @@
             </blockquote>
             <hr>
         </div>
-        <div th:if="${numberOfPages gt 0}">
+        <div th:if="${numberOfPages gt 1}">
             <nav aria-label="...">
                 <ul class="pagination">
-                    <li class="page-item" th:classappend="${page eq 0} ? disabled">
+                    <li class="page-item" th:classappend="${page eq 1} ? disabled">
                         <a class="page-link" th:href="@{/search(query=${q}, page=${page - 1})}"
                             tabindex="-1">
                             Previous
                         </a>
                     </li>
                     <li class="page-item disabled">
-                        <a class="page-link" href="#" th:text="${page + 1}"></a>
+                        <a class="page-link" href="#" th:text="${page}"></a>
                     </li>
                     <li class="page-item" th:classappend="${page gt numberOfPages - 1} ? disabled">
                         <a class="page-link" th:href="@{/search(query=${q}, page=${page + 1})}">Next</a>

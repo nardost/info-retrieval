@@ -36,7 +36,7 @@ public class QueryController {
             @RequestParam(required = false) String page,
             Model model) {
 
-        final int currentPage = (page != null && !page.equals("")) ? Integer.parseInt(page) : 0;
+        final int currentPage = (page != null && !page.equals("")) ? Integer.parseInt(page) : 1;
         final int itemsPerPage = 10;
 
         try {
@@ -52,13 +52,9 @@ public class QueryController {
                 docWithScore.put(bbcDocument.getLink(), bbcDocument);
             }
             final int numberOfResults = docWithScore.size();
-            /*
-             * Actually, this is one less than the actual number of pages.
-             * If there is 1 page only, this variable will have a value of 0.
-             */
-            int numberOfPages = numberOfResults / itemsPerPage;
-            final int from = currentPage * itemsPerPage; //inclusive
-            int to = currentPage * itemsPerPage + itemsPerPage; //exclusive
+            int numberOfPages = (numberOfResults / itemsPerPage) + ((numberOfResults % itemsPerPage != 0) ? 1 : 0);
+            final int from = (currentPage - 1) * itemsPerPage; //inclusive
+            int to = (currentPage - 1) * itemsPerPage + itemsPerPage; //exclusive
             to = (to > numberOfResults) ? numberOfResults : to;
             Map<String, BBCDocument> currentPageResults = new LinkedHashMap<>();
 
