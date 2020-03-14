@@ -31,7 +31,14 @@ public class QueryController {
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam(required = false) String query, Model model) {
+    public String search(
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) String page,
+            Model model) {
+
+        final int currentPage = (page != null && !page.equals("")) ? Integer.parseInt(page) : 0;
+        final int itemsPerPage = 10;
+
         try {
             if(query == null || query.equals("")) {
                 return "home";
@@ -44,10 +51,28 @@ public class QueryController {
                 BBCDocument bbcDocument = DocumentUtilities.getBBCDocumentFromFile(documentReference.getPath());
                 docWithScore.put(bbcDocument.getLink(), bbcDocument);
             }
+            final int numberOfResults = docWithScore.size();
+            /*
+             * Actually, this is one less than the actual number of pages.
+             * If there is 1 page only, this variable will have a value of 0.
+             */
+            int numberOfPages = numberOfResults / itemsPerPage;
+            final int from = currentPage * itemsPerPage; //inclusive
+            int to = currentPage * itemsPerPage + itemsPerPage; //exclusive
+            to = (to > numberOfResults) ? numberOfResults : to;
+            Map<String, BBCDocument> currentPageResults = new LinkedHashMap<>();
+
+            for(int i = from; i < to; i++) {
+                String key = (String) docWithScore.keySet().toArray()[i];
+                currentPageResults.put(key, docWithScore.get(key));
+            }
 
             model.addAttribute("applicationName", applicationName);
-            model.addAttribute("results", docWithScore);
-            model.addAttribute("numberOfResults", results.size());
+            model.addAttribute("numberOfResults", numberOfResults);
+            model.addAttribute("results", currentPageResults);
+            model.addAttribute("numberOfPages", numberOfPages);
+            model.addAttribute("page", currentPage);
+            model.addAttribute("q", query);
             return "home";
         } catch (IOException ioe) {
             return "error";

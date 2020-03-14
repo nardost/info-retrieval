@@ -41,15 +41,36 @@
         </form>
     </div>
     <hr>
+    <small class="text-info">Results retrieved: <em th:text="${numberOfResults}"></em></small>
+    <hr>
     <div class="results">
         <div th:each="result : ${results}">
             <h3><a th:href="${result.key}" th:text="${result.value.title}"></a></h3>
             <strong th:text="${result.value.program}" class="text-info"></strong>
-            <blockquote class="lead">
-                <p th:text="${result.value.synopsis}"></p>
-                <footer class="blockquote-footer text-success">Last on: <span th:text="${result.value.date}"></span></footer>
+            <blockquote>
+                <small th:text="${result.value.synopsis}"></small>
+                <footer class="blockquote-footer text-success">Last broadcast on:
+                    <span th:text="${result.value.date}"></span></footer>
             </blockquote>
             <hr>
+        </div>
+        <div th:if="${numberOfPages gt 0}">
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <li class="page-item" th:classappend="${page eq 0} ? disabled">
+                        <a class="page-link" th:href="@{/search(query=${q}, page=${page - 1})}"
+                            tabindex="-1">
+                            Previous
+                        </a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" th:text="${page + 1}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${page gt numberOfPages - 1} ? disabled">
+                        <a class="page-link" th:href="@{/search(query=${q}, page=${page + 1})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
