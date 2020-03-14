@@ -1,6 +1,8 @@
 package ntessema.csc575.springbootui;
 
+import ntessema.csc575.documents.BBCDocument;
 import ntessema.csc575.documents.DocumentReference;
+import ntessema.csc575.documents.DocumentUtilities;
 import ntessema.csc575.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,15 +37,17 @@ public class QueryController {
                 return "home";
             }
             Map<DocumentReference, Double> results = queryService.getResults(Query.createQueryFromString(query));
-            Map<String, Double> docWithScore = new LinkedHashMap<>();
+            Map<String, BBCDocument> docWithScore = new LinkedHashMap<>();
             for(Map.Entry<DocumentReference, Double> result : results.entrySet()) {
                 DocumentReference documentReference = result.getKey();
                 Double score = result.getValue();
-
+                BBCDocument bbcDocument = DocumentUtilities.getBBCDocumentFromFile(documentReference.getPath());
+                docWithScore.put(bbcDocument.getLink(), bbcDocument);
             }
+
             model.addAttribute("applicationName", applicationName);
-            model.addAttribute("queryString", query);
-            model.addAttribute("size", results.size());
+            model.addAttribute("results", docWithScore);
+            model.addAttribute("numberOfResults", results.size());
             return "home";
         } catch (IOException ioe) {
             return "error";

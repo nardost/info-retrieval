@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -113,17 +114,19 @@ public class DocumentUtilities {
      * @return
      * @throws IOException
      */
-    public BBCDocument getBBCDocumentFromFile(Path path) throws IOException {
+    public static BBCDocument getBBCDocumentFromFile(Path path) throws IOException {
         List<String> lines = Files.readAllLines(path);
+
         String program;
         String title;
         String link;
         String date;
+        String synopsis;
 
         String programPattern = "Program:";
         String titlePattern = "Title:";
         String linkPattern = "Link:";
-        String datePattern = "Date:";
+        String datePattern = "Last Broadcast Date:";
 
         int numberOfLines = lines.size();
         /*
@@ -138,22 +141,29 @@ public class DocumentUtilities {
                 !lines.get(1).matches(titlePattern + ".*") ||
                 !lines.get(2).matches(linkPattern + ".*") ||
                 !lines.get(3).matches(datePattern + ".*")) {
-            //return null;
-            program = "unknown-program";
-            title = "title-not-available";
-            link = "link-not-available";
-            date = "date-unknown";
+
+            program = "Program Name Not Available";
+            title = "Episode Title Not Available";
+            link = "Link Not Available";
+            date = "Last Broadcast Date Not Available";
+            synopsis = "Synopsis Not Available";
         } else {
-            program = (lines.get(0).split(programPattern).length > 1) ? lines.get(0).split(programPattern)[1] : "unknown-program";
-            title = (lines.get(1).split(titlePattern).length > 1) ? lines.get(1).split(titlePattern)[1] : "title-not-available";
-            link = (lines.get(2).split(linkPattern).length > 1) ? lines.get(2).split(linkPattern)[1] : "link-not-available";
-            date = (lines.get(3).split(datePattern).length > 1) ? lines.get(3).split(datePattern)[1] : "date-unknown";
+            program = (lines.get(0).split(programPattern).length > 1) ? lines.get(0).split(programPattern)[1] : "";
+            title = (lines.get(1).split(titlePattern).length > 1) ? lines.get(1).split(titlePattern)[1] : "";
+            link = (lines.get(2).split(linkPattern).length > 1) ? lines.get(2).split(linkPattern)[1] : "";
+            date = (lines.get(3).split(datePattern).length > 1) ? lines.get(3).split(datePattern)[1] : "";
+            StringBuilder sb = new StringBuilder();
+            for(int i = 4; i < lines.size(); i++) {
+                sb.append(lines.get(i));
+                sb.append("\n");
+            }
+            synopsis = sb.toString();
         }
         return new BBCDocument(path.getFileName().toString(),
                 program,
                 title,
                 link,
                 date,
-                title);
+                synopsis);
     }
 }

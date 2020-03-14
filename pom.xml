@@ -17,6 +17,7 @@
         <module>indexer</module>
         <module>query-processor</module>
         <module>spring-boot-ui</module>
+        <module>crawler</module>
     </modules>
 
     <properties>

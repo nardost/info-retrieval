@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <configuration>
     <property key="tokenizer" value="opennlp" />
-    <property key="corpus" value="time" />
+    <property key="corpus" value="bbc" />
     <property key="corporaDirEnvVar" value="CORPORA_DIR" />
 </configuration>

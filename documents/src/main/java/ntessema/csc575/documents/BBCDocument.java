@@ -6,7 +6,7 @@ public class BBCDocument {
     private String title;
     private String link;
     private String date;
-    private String content;
+    private String synopsis;
 
     public BBCDocument(String id, String program, String title, String link, String date, String content) {
         this.id = id;
@@ -14,7 +14,7 @@ public class BBCDocument {
         this.title = title;
         this.link = link;
         this.date = date;
-        this.content = content;
+        this.synopsis = content;
     }
 
     public String getId() {
@@ -37,7 +37,7 @@ public class BBCDocument {
         return date;
     }
 
-    public String getContent() {
-        return content;
+    public String getSynopsis() {
+        return synopsis;
     }
 }
