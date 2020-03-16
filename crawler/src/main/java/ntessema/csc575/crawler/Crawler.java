@@ -268,7 +268,10 @@ public class Crawler {
                             document.selectFirst(synopsisSelector) :
                             document.selectFirst(longestSynopsisSelector);
                     final String programSynopsis = Jsoup.parse(synopsis.html()).text();
-                    final String lastProgramDate = document.selectFirst(lastDateSelector).html();
+                    String lastProgramDate = "Not available";
+                    if(document.selectFirst(lastDateSelector) != null) {
+                        lastProgramDate = document.selectFirst(lastDateSelector).html();
+                    }
                     StringBuilder sb = new StringBuilder();
                     sb.append("Program: " + programTitle);
                     sb.append("\n");

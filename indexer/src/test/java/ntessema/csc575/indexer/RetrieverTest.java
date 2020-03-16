@@ -129,10 +129,10 @@ public class RetrieverTest {
         retriever = new Retriever();
     }
 
-    @Test @Ignore
+    @Test
     public void test_retriever() {
 
-        /*
+        /**
          * Run this only if the corpus is the benchmark corpus (time).
          * I used this to run all the 83 benchmark queries against the time
          * magazine corpus. The results are formatted in a usable form and

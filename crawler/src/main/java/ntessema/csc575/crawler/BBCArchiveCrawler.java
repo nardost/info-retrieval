@@ -15,7 +15,18 @@ public class BBCArchiveCrawler {
          * The base URLs were themselves obtained by crawling the a to z program list.
          */
         final String[] programsSelectedForDownload = new String [] {
-                "A-History-of-Ideas"
+                "The-Documentary",
+                "Crossing-Continents",
+                "The-Forum",
+                "Outlook",
+                "Free-Thinking",
+                "Last-Word",
+                "Great-Lives",
+                "Start-the-Week",
+                "Thinking-Allowed",
+                "The-Why-Factor",
+                "A-History-of-Ideas",
+                "The-History-Hour"
         };
         crawl(programsSelectedForDownload);
     }

@@ -7,14 +7,21 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
 
+/**
+ * This test creates an inverted index and outputs the tokens
+ * with their idf and their postings.
+ */
 public class InvertedIndexTest {
 
     @Test
     public void iterate_over_the_inverted_index() {
         try {
             Map<String, TokenInfo> invertedIndex = Indexer.getInstance().getInvertedIndex();
+            StringBuilder sb = new StringBuilder();
             invertedIndex.forEach((token, tokenInfo) -> {
-                System.out.println(String.format("%20s", token + "(" + tokenInfo.getIdf() + ")") + " -> " + Utilities.getInstance().listToString(tokenInfo.getOccurrence()));
+                sb.append(String.format("", token + "(" + tokenInfo.getIdf() + ")"));
+                sb.append(" -> ");
+                sb.append(Utilities.getInstance().listToString(tokenInfo.getOccurrence()));
             });
         } catch (IOException ioe) {
             ioe.printStackTrace();

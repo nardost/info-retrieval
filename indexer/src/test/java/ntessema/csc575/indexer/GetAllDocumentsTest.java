@@ -15,13 +15,16 @@ public class GetAllDocumentsTest {
         try {
             List<Document> documents = DocumentUtilities.getAllDocuments();
             System.out.println("Number of documents: " + documents.size());
+            final String separator = " ";
             StringBuilder sb = new StringBuilder();
+            sb.append("{");
             documents.forEach(document -> {
-                String separator = ",";
-                sb.append(document.getId());
                 sb.append(separator);
-                sb.append("\n");
+                sb.append(document.getId());
+                sb.append(",");
             });
+            sb.replace(sb.length() - 1, sb.length(), " ");
+            sb.append("}");
             System.out.println(sb.toString());
         } catch (URISyntaxException use) {
             use.printStackTrace();
