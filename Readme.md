@@ -43,17 +43,17 @@ Go to the project home and run
 
 ```
 ### Running the Crawler
-- The directory ```corpora``` must contain the ```bbc``` directory.
-- The jar file must be in the same directory level as ```corpora```
- 
+- The ```CORPORA_DIR``` environment variable must be set.
+- The directory ```$CORPORA_DIR/bbc``` must exist.
+
 ```
 $java -jar crawler-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 ### Running the Main Application
 
-- The jar file must be in the same directory level as ```corpora```
-- The ```bbc``` corpus documents must be in ```corpus/bbc``` 
+- The ```CORPORA_DIR``` environment variable must be set.
+- The ```bbc``` corpus documents must be in ```$CORPORA_DIR/bbc``` 
 - Port 8282 must be free.
 
 ```$java -jar spring-boot-ui-1.0.jar```
