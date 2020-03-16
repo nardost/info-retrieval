@@ -42,7 +42,10 @@
     </div>
     <hr>
     <div class="text-info" th:if="${numberOfResults != null}">
-        <p>Results retrieved: <strong th:text="${numberOfResults}"></strong></p>
+        <p>
+            <strong th:text="${numberOfResults}"></strong> results retrieved for query:<br>
+            <small class="text-secondary lead" th:text="${q}"></small>
+        </p>
         <hr>
     </div>
 
