@@ -4,6 +4,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * This class contains a list of candidate programs for download.
+ * Only a subset of the programs in the list are given to the crawler for download.
+ */
 public class BBCRadioPrograms {
     /*
      * No need to instantiate this class

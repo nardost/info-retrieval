@@ -8,6 +8,9 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class is implementation of the retrieval algorithm.
+ */
 public class Retriever {
 
     /**
@@ -109,7 +112,7 @@ public class Retriever {
     /**
      * Compute the length of a query vector.
      * @param queryVector
-     * @return
+     * @return norm of query
      */
     private double computeLengthOfQueryVector(Map<String, Double> queryVector) {
         double accumulator = 0.0;

@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
 
-
 /**
  * Indexer is a singleton class that contains the inverted index
  * as a member variable.
@@ -55,12 +54,15 @@ public class Indexer {
         return INDEXER;
     }
 
+    /**
+     * Accessor method to the single Indexer instance.
+     */
     public Map<String, TokenInfo> getInvertedIndex() {
         return invertedIndex;
     }
 
     /**
-     * Create an inverted index.
+     * Create an inverted index - the only instance.
      * Algorithm from slide # 10 & 13.
      */
     private Map<String, TokenInfo> createInvertedIndex() throws

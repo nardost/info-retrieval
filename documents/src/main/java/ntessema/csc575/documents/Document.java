@@ -3,7 +3,8 @@ package ntessema.csc575.documents;
 import java.util.Comparator;
 import java.util.Map;
 
-/*
+/**
+ * Document-Term vector...
  * This can serve both as document and as query
  */
 public class Document {

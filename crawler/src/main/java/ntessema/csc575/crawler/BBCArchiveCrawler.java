@@ -4,7 +4,12 @@ import java.io.IOException;
 
 import static ntessema.csc575.crawler.Crawler.crawl;
 
+/**
+ * This class is the main crawler that
+ * downloads selected BBC Radio programs.
+ */
 public class BBCArchiveCrawler {
+
 
     public static void main(String[] args) throws IOException {
         /*

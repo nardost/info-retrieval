@@ -16,6 +16,9 @@ import java.util.Map;
 
 import static ntessema.csc575.crawler.BBCRadioPrograms.PROGRAMS;
 
+/**
+ * This class contains the crawler methods.
+ */
 public class Crawler {
 
     /*

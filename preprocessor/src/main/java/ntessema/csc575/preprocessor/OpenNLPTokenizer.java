@@ -7,6 +7,9 @@ import opennlp.tools.tokenize.WhitespaceTokenizer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Implementation of an Apache OpenNLP stemmer and a tokenizer
+ */
 public class OpenNLPTokenizer implements Tokenizer {
 
     @Override
@@ -28,8 +31,10 @@ public class OpenNLPTokenizer implements Tokenizer {
              */
             tokens = tokenizer.tokenize(line.toLowerCase());
             for(String token : tokens) {
-                //TODO: remove if stop word.
-                //https://github.com/apache/opennlp-sandbox/blob/master/summarizer/src/main/java/opennlp/summarization/preprocess/StopWords.java
+                /**
+                 * Stop words downloaded from the Apache OpenNLP project github site:
+                 * https://github.com/apache/opennlp-sandbox/blob/master/summarizer/src/main/java/opennlp/summarization/preprocess/StopWords.java
+                 */
                 if(stopWords.isStopWord(token.toLowerCase())) {
                     continue;
                 }

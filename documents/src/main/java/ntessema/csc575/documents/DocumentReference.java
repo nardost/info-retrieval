@@ -2,7 +2,7 @@ package ntessema.csc575.documents;
 
 import java.nio.file.Path;
 
-/*
+/**s
  * A simple class for storing a reference to a document file
  * that includes information on the length of its document
  * vector.

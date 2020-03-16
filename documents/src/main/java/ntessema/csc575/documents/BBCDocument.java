@@ -1,5 +1,10 @@
 package ntessema.csc575.documents;
 
+/**
+ * This class is a representation of a BBC Radio program episode.
+ * In the MVC web application, instances of this class are returned to the View
+ * as results to a query.
+ */
 public class BBCDocument {
     private String id;
     private String program;

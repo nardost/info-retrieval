@@ -55,7 +55,8 @@ public class Utilities {
                     ├── 102.txt
                     ├── 103.txt
      *
-     *
+     * Given a fileName, this method returns the Path corresponding to
+     * the file in the corpus directory.
      */
     public Path getPathFromFileName(String fileName) {
         final String separator = File.separator;

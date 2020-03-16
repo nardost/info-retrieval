@@ -5,6 +5,9 @@ import ntessema.csc575.documents.DocumentException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Data structure that appears in the Dictionary of the inverted index.
+ */
 public class TokenInfo {
 
     /*

@@ -20,8 +20,10 @@ package ntessema.csc575.preprocessor;
 import java.util.Hashtable;
 
 /**
+ * Stop words downloaded from the Apache OpenNLP project github site:
+ * https://github.com/apache/opennlp-sandbox/blob/master/summarizer/src/main/java/opennlp/summarization/preprocess/StopWords.java
  *
- * @author rtww
+ * Time Magazine benchmark data stop words are also appended to it.
  */
 public class StopWords {
 
@@ -219,7 +221,7 @@ public class StopWords {
         h.put("yours", true);
         h.put("yourself", true);
         h.put("yourselves ", true);
-        /*
+        /**
          * More stop words from TIME benchmark data.
          */
         final String [] timeMagazineStopWords = new String[] { "A", "ABOUT", "ABOVE", "ACROSS", "ACTUALLY", "ADD", "ADDED", "AFTER", "AGAIN", "AGAINST", "AGO", "ALL", "ALMOST", "ALONG", "ALREADY", "ALSO", "ALTHOUGH", "ALWAYS", "AM", "AMONG", "AN", "AND", "ANOTHER", "ANY", "ANYONE", "ARE", "AROUND", "AS", "ASKED", "AT", "B", "BACK", "BAD", "BE", "BECAME", "BECAUSE", "BECOME", "BEEN", "BEFORE", "BEGAN", "BEHIND", "BEING", "BEST", "BETTER", "BETWEEN", "BIG", "BIGGEST", "BOTH", "BROUGHT", "BUT", "BY", "C", "CALLED", "CAME", "CAN", "CANNOT", "CENT", "COME", "COMPLETE", "CONTINUED", "COULD", "D", "DAY", "DECIDED", "DECLARED", "DESPITE", "DID", "DO", "DOES", "DOWN", "DURING", "E", "EACH", "EARLY", "EIGHT", "ENOUGH", "ENTIRE", "EP", "ETC", "EVEN", "EVER", "EVERY", "EVERYTHING", "F", "FACE", "FACED", "FACT", "FAILED", "FAR", "FELL", "FEW", "FINALLY", "FIND", "FIRST", "FIVE", "FOR", "FOUND", "FOUR", "FROM", "G", "GAVE", "GET", "GIVE", "GIVEN", "GO", "GOING", "GOOD", "GOT", "H", "HAD", "HAS", "HAVE", "HAVING", "HE", "HELD", "HER", "HERE", "HIM", "HIMSELF", "HIS", "HOUR", "HOURS", "HOW", "HOWEVER", "I", "IDEA", "IF", "IN", "INCLUDING", "INSTEAD", "INTO", "IS", "IT", "ITS", "ITSELF", "J", "K", "KEEP", "KNOW", "KNOWN", "KNOWS", "L", "LACK", "LAST", "LATER", "LEAST", "LED", "LESS", "LET", "LIKE", "LITTLE", "LONG", "LONGER", "LOOK", "LOT", "M", "MADE", "MAKE", "MAKING", "MAN", "MANY", "MATTER", "MAY", "ME", "MEANS", "MEN", "MIGHT", "MILES", "MILLION", "MOMENT", "MONTH", "MONTHS", "MORE", "MORNING", "MOST", "MUCH", "MUST", "MY", "N", "NAMED", "NEAR", "NEARLY", "NECESSARY", "NEED", "NEEDED", "NEEDS", "NEVER", "NIGHT", "NO", "NOR", "NOT", "NOTE", "NOTHING", "NOW", "O", "OF", "OFF", "OFTEN", "ON", "ONCE", "ONE", "ONLY", "OR", "OTHER", "OTHERS", "OUR", "OUT", "OUTSIDE", "OVER", "OWN", "P", "PAGE", "PART", "PAST", "PER", "PERHAPS", "PLACE", "POINT", "PROVED", "PUT", "Q", "QM", "QUESTION", "R", "REALLY", "RECENT", "RECENTLY", "REPORTED", "ROUND", "S", "SAID", "SAME", "SAY", "SAYS", "SEC", "SECOND", "SECTION", "SEE", "SEEMED", "SEEMS", "SENSE", "SET", "SETS", "SEVEN", "SHE", "SHORT", "SHOULD", "SHOWED", "SINCE", "SINGLE", "SIX", "SMALL", "SO", "SOME", "SOON", "START", "STARTED", "STILL", "SUCH", "T", "TAKE", "TAKEN", "TAKES", "TEN", "TEXT", "THAN", "THAT", "THE", "THEIR", "THEM", "THEMSELVES", "THEN", "THERE", "THESE", "THEY", "THING", "THINGS", "THIRD", "THIS", "THOSE", "THOUGH", "THOUGHT", "THOUSANDS", "THREE", "THROUGH", "THUS", "TIME", "TINY", "TO", "TODAY", "TOGETHER", "TOLD", "TOO", "TOOK", "TOWARD", "TWO", "U", "UNDER", "UNTIL", "UP", "UPON", "US", "USE", "USED", "V", "VERY", "W", "WARNING", "WAS", "WAY", "WE", "WEEK", "WEEKS", "WELL", "WENT", "WERE", "WHAT", "WHEN", "WHERE", "WHETHER", "WHICH", "WHILE", "WHO", "WHOM", "WHOSE", "WHY", "WILL", "WITH", "WITHOUT", "WORD", "WORDS", "WOULD", "X", "Y", "YEAR", "YEARS", "YET", "YOU", "YOUR", "Z" };

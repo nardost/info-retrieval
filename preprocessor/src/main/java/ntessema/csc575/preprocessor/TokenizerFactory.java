@@ -2,6 +2,10 @@ package ntessema.csc575.preprocessor;
 
 import ntessema.csc575.commons.ConfigurationManager;
 
+/**
+ * This class instantiates a specific Tokenizer based on
+ * the value of the tokenizer configuration parameter.
+ */
 public class TokenizerFactory {
 
     private TokenizerFactory() {

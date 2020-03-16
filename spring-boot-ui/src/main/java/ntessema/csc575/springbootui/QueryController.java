@@ -16,6 +16,11 @@ import java.net.URISyntaxException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+
+/**
+ * The Controller class in the MVC setup.
+ * Forwards requests to the appropriate page.
+ */
 @Controller
 public class QueryController {
 

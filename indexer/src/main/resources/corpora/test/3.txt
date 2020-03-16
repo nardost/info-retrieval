@@ -1,1 +1,0 @@
-Clusters are created from short snippets of documents retrieved by web search engines which are as good as clusters created from the full text of web documents.

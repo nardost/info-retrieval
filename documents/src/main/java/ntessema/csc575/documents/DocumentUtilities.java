@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +16,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * This class contains utility methods such as file accessing
+ * methods.
+ */
 public class DocumentUtilities {
 
     /*
@@ -108,10 +111,8 @@ public class DocumentUtilities {
     }
 
     /**
-     * TODO: This should be moved elsewhere. The content has to
-     *  come from lines 5 onwards.
      * @param path
-     * @return
+     * @return a BBC document
      * @throws IOException
      */
     public static BBCDocument getBBCDocumentFromFile(Path path) throws IOException {

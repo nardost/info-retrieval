@@ -3,6 +3,9 @@ package ntessema.csc575.indexer;
 import ntessema.csc575.documents.DocumentException;
 import ntessema.csc575.documents.DocumentReference;
 
+/**
+ * Data structure that appears in the postings lists of the inverted index.
+ */
 public class TokenOccurrence {
 
     private DocumentReference documentReference;

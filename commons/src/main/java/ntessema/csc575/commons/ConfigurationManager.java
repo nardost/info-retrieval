@@ -12,6 +12,11 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class manages the application-wide configuration
+ * parameters save in the configuration.xml file under
+ * the resources directory of this module (commons).
+ */
 public class ConfigurationManager {
     private static Map<String, String> configuration = null;
 
@@ -49,6 +54,9 @@ public class ConfigurationManager {
         }
     }
 
+    /**
+     * Access configuration parameters by name through this method.
+     */
     public static String getConfiguration(String config) {
         init();
         return configuration.get(config);

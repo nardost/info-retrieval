@@ -9,6 +9,11 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+
+/**
+ * The single entry point to the application. Running this class
+ * fires up the UI and inverted index construction.
+ */
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 public class SpringBootUI {

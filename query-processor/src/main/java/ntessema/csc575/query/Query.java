@@ -10,6 +10,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * The query processor class.
+ *
+ * Contains a single method that converts a string query into a Document object.
+ *
+ * No attempt has been made to expand queries. Perhaps this is
+ * the reason why the Precision value on the benchmark data set is low.
+ */
 public class Query {
 
     /**
