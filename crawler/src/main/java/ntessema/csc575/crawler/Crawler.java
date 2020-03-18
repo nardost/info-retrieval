@@ -275,6 +275,10 @@ public class Crawler {
                     if(document.selectFirst(lastDateSelector) != null) {
                         lastProgramDate = document.selectFirst(lastDateSelector).html();
                     }
+                    final String olderDateSelector = "div.map__intro div.episode-panel__meta time";
+                    if(document.selectFirst(olderDateSelector) != null) {
+                        lastProgramDate = document.selectFirst(olderDateSelector).html();
+                    }
                     StringBuilder sb = new StringBuilder();
                     sb.append("Program: " + programTitle);
                     sb.append("\n");
@@ -292,8 +296,13 @@ public class Crawler {
                     final String documentName = episodeUrl.substring(episodeUrl.lastIndexOf('/') + 1);
 
                     final String filePath = corporaDirectory + separator + corpus + separator + documentName;
-                    File file = new File(filePath);
-                    if(file.exists()) {
+                    //File file = new File(filePath);
+                    /*
+                     * This appears to be expensive to do every time an episode link
+                     * is discovered. Instead, find list of episodes downloaded from the
+                     * directory and ...
+                     */
+                    if(DownloadedEpisodesList.h.containsKey(documentName)) {//file.exists()) {
                         System.out.println("File " + documentName + " already exists.");
                     } else {
                         Path path = Paths.get(filePath);

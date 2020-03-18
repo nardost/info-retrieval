@@ -37,7 +37,9 @@ public class BBCRadioPrograms {
         { "Meridian", "https://www.bbc.co.uk/programmes/p03m0hz8/episodes/guide" },
         { "Discovery", "https://www.bbc.co.uk/programmes/p002w557/episodes/player" },
         { "A-History-of-Ideas", "https://www.bbc.co.uk/programmes/b04bwydw/episodes/player" },
-        { "Outlook", "https://www.bbc.co.uk/programmes/p002vsxt/episodes/player" }
+        { "Outlook", "https://www.bbc.co.uk/programmes/p002vsxt/episodes/player" },
+        { "Omnibus", "https://www.bbc.co.uk/programmes/p0376j91/episodes/guide" },
+        { "Letter-from-America", "https://www.bbc.co.uk/programmes/b00f6hbp/episodes/player" }
     }).collect(Collectors.toMap(x -> x[0], x -> x[1]));
 
 }
