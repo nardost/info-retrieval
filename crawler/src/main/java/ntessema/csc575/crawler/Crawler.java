@@ -296,13 +296,13 @@ public class Crawler {
                     final String documentName = episodeUrl.substring(episodeUrl.lastIndexOf('/') + 1);
 
                     final String filePath = corporaDirectory + separator + corpus + separator + documentName;
-                    //File file = new File(filePath);
+                    File file = new File(filePath);
                     /*
                      * This appears to be expensive to do every time an episode link
                      * is discovered. Instead, find list of episodes downloaded from the
                      * directory and ...
                      */
-                    if(DownloadedEpisodesList.h.containsKey(documentName)) {//file.exists()) {
+                    if(file.exists()) {
                         System.out.println("File " + documentName + " already exists.");
                     } else {
                         Path path = Paths.get(filePath);
