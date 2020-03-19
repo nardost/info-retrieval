@@ -270,7 +270,10 @@ public class Crawler {
                     Element synopsis = (document.selectFirst(synopsisSelector) != null) ?
                             document.selectFirst(synopsisSelector) :
                             document.selectFirst(longestSynopsisSelector);
-                    final String programSynopsis = Jsoup.parse(synopsis.html()).text();
+                    String programSynopsis = "Synopsis not available.";
+                    if(synopsis != null) {
+                        programSynopsis = Jsoup.parse(synopsis.html()).text();
+                    }
                     String lastProgramDate = "Not available";
                     if(document.selectFirst(lastDateSelector) != null) {
                         lastProgramDate = document.selectFirst(lastDateSelector).html();
