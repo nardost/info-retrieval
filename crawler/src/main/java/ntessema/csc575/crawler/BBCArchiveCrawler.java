@@ -20,7 +20,7 @@ public class BBCArchiveCrawler {
          * The base URLs were themselves obtained by crawling the a to z program list.
          */
         final String[] programsSelectedForDownload = new String [] {
-                "Discovery"
+                "The-Reith-Lectures"
         };
         crawl(programsSelectedForDownload);
     }
