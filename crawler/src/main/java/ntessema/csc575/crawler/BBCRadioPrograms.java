@@ -40,7 +40,8 @@ public class BBCRadioPrograms {
         { "Outlook", "https://www.bbc.co.uk/programmes/p002vsxt/episodes/player" },
         { "Omnibus", "https://www.bbc.co.uk/programmes/p0376j91/episodes/guide" },
         { "Letter-from-America", "https://www.bbc.co.uk/programmes/b00f6hbp/episodes/player" },
-        { "The-Reith-Lectures", "https://www.bbc.co.uk/programmes/b00729d9/episodes/player" }
+        { "The-Reith-Lectures", "https://www.bbc.co.uk/programmes/b00729d9/episodes/player" },
+        { "World-Book-Club", "https://www.bbc.co.uk/programmes/p003jhsk/episodes/player" }
     }).collect(Collectors.toMap(x -> x[0], x -> x[1]));
 
 }

@@ -20,7 +20,29 @@ public class BBCArchiveCrawler {
          * The base URLs were themselves obtained by crawling the a to z program list.
          */
         final String[] programsSelectedForDownload = new String [] {
-                "The-Reith-Lectures"
+          "The-Why-Factor",
+          "The-Forum",
+          "Thinking-Allowed",
+          "In-Our-Time",
+          "Start-the-Week",
+          "The-Fifth-Floor",
+          "Crossing-Continents",
+          "The-History-Hour",
+          "Free-Thinking",
+          "The-Documentary",
+          "Last-Word",
+          "The-Essay",
+          "Heart-and-Soul",
+          "Great-Lives",
+          "Night-Waves",
+          "Meridian",
+          "Discovery",
+          "A-History-of-Ideas",
+          "Outlook",
+          "Omnibus",
+          "Letter-from-America",
+          "The-Reith-Lectures",
+          "World-Book-Club"
         };
         crawl(programsSelectedForDownload);
     }
